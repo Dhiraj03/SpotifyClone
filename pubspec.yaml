@@ -23,8 +23,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
+  file_picker: ^1.13.3
+  assets_audio_player: ^2.0.9
+  equatable: ^1.2.2
+  google_fonts: ^1.1.0
+  hive: ^1.4.3
+  hive_flutter: ^0.3.1
+  path_provider: ^1.6.11
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
@@ -32,8 +37,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  file_picker: ^1.13.3
-  assets_audio_player: ^2.0.9
+  hive_generator: ^0.7.1
+  build_runner:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

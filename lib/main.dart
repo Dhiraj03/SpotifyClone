@@ -1,8 +1,18 @@
+import 'package:SpotifyClone/data/models/album_art_model.dart';
+import 'package:SpotifyClone/data/models/album_model.dart';
+import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-void main() {
+void main() async {
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  Hive.registerAdapter(AlbumArtModelAdapter());
+  Hive.registerAdapter(SongDetailsModelAdapter());
+  Hive.registerAdapter(AlbumModelAdapter());
   runApp(MyApp());
 }
 
