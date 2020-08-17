@@ -51,12 +51,12 @@ packages:
     source: hosted
     version: "2.4.1"
   bloc:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.2"
+    version: "4.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -250,7 +250,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.1"
+    version: "4.0.1"
   flutter_icons:
     dependency: "direct main"
     description:
