@@ -1,5 +1,5 @@
 import 'package:SpotifyClone/data/models/album_art_model.dart';
-import 'package:SpotifyClone/data/models/album_model.dart';
+import 'package:SpotifyClone/data/models/playlist_model.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -12,7 +12,9 @@ void main() async {
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(AlbumArtModelAdapter());
   Hive.registerAdapter(SongDetailsModelAdapter());
-  Hive.registerAdapter(AlbumModelAdapter());
+  Hive.registerAdapter(PlaylistModelAdapter());
+  await Hive.openBox('songs');
+  await Hive.openBox('playlists');
   runApp(MyApp());
 }
 
