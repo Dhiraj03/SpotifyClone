@@ -1,6 +1,7 @@
 import 'package:SpotifyClone/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:SpotifyClone/presentation/pages/add_song_page.dart';
 import 'package:SpotifyClone/presentation/pages/home_page.dart';
+import 'package:SpotifyClone/presentation/pages/library_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -29,7 +30,6 @@ class _DashboardPageState extends State<DashboardPage>
     return BlocProvider<DashboardBloc>(
       create: (BuildContext context) => dashboardBloc,
       child: BlocConsumer<DashboardBloc, DashboardState>(
-          
           listener: (BuildContext context, DashboardState state) {},
           builder: (BuildContext context, DashboardState state) {
             print(state.toString());
@@ -48,7 +48,12 @@ class _DashboardPageState extends State<DashboardPage>
                   child: TabBar(
                       indicatorColor: Color(0xFFBB86FC),
                       indicatorWeight: 3,
-                      onTap: (index) {},
+                      onTap: (index) {
+                        if (tabController.previousIndex !=
+                            tabController.index) {
+                          pageController.jumpToPage(tabController.index);
+                        }
+                      },
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorPadding: EdgeInsets.zero,
                       labelPadding: EdgeInsets.zero,
@@ -91,7 +96,7 @@ class _DashboardPageState extends State<DashboardPage>
                 ),
                 body: PageView(
                   controller: pageController,
-                  children: <Widget>[HomePage()],
+                  children: <Widget>[HomePage(), LibraryPage()],
                 ),
               );
             } else if (state is AddSongPageState) {

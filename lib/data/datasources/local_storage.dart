@@ -10,7 +10,8 @@ class LocalStorage {
   }
 
   Future<void> addSong(SongDetailsModel song) async {
-    songsBox.putAt(song.songID, song);
+    print('id ' + song.songID.toString());
+    songsBox.add(song);
   }
 
   Future<void> createPlaylist(PlaylistModel playlist) async {
@@ -29,5 +30,10 @@ class LocalStorage {
     final playlist = playlistsBox.getAt(albumID) as PlaylistModel;
     playlist.songs.add(song);
     await playlistsBox.putAt(albumID, playlist);
+  }
+
+  int getSongsLength() {
+    if (songsBox.isEmpty) return 0;
+    return songsBox.length;
   }
 }

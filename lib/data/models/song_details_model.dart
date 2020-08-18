@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:SpotifyClone/core/constants.dart';
 import 'package:SpotifyClone/data/models/album_art_model.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -9,13 +11,29 @@ part 'song_details_model.g.dart';
 @HiveType(typeId: songDetailModelId)
 class SongDetailsModel extends Equatable {
   @HiveField(0)
-  Audio song;
+  String title;
   @HiveField(1)
-  AlbumArtModel albumArt;
+  String album;
   @HiveField(2)
-  List<String> genres;
+  String artists;
   @HiveField(3)
+  List<String> genres;
+  @HiveField(4)
+  String imagePath;
+  @HiveField(5)
   int songID;
-  SongDetailsModel({this.albumArt, this.genres, this.song, this.songID});
-  List<Object> get props => <dynamic>[song, albumArt, genres, songID];
+  @HiveField(6)
+  String path;
+  SongDetailsModel({
+    this.album,
+    this.artists,
+    this.genres,
+    this.imagePath,
+    this.path,
+    this.songID,
+    this.title,
+  });
+  @override
+  List<Object> get props =>
+      [album, artists, genres, imagePath, path, songID,title];
 }

@@ -122,7 +122,7 @@ class _AddSongPageState extends State<AddSongPage> {
                                           letterSpacing: 0.6),
                                     ),
                                   ),
-                                  state.audio == null
+                                 addSongBloc.songDetails.path == null
                                       ? Icon(Icons.close,
                                           color: Colors.red[400])
                                       : Icon(
@@ -142,7 +142,7 @@ class _AddSongPageState extends State<AddSongPage> {
                                   validator: (value) {
                                     if (nameController.text.isEmpty)
                                       return "Track title must not be empty";
-                                    return "";
+                                    return null;
                                   },
                                   cursorColor: Theme.of(context).accentColor,
                                   cursorWidth: 1.4,
@@ -174,7 +174,7 @@ class _AddSongPageState extends State<AddSongPage> {
                                   validator: (value) {
                                     if (artistController.text.isEmpty)
                                       return "Artists must not be empty";
-                                    return "";
+                                    return null;
                                   },
                                   cursorColor: Theme.of(context).accentColor,
                                   cursorWidth: 1.4,
@@ -206,7 +206,7 @@ class _AddSongPageState extends State<AddSongPage> {
                                   validator: (value) {
                                     if (albumNameController.text.isEmpty)
                                       return "Album title must not be empty";
-                                    return "";
+                                    return null;
                                   },
                                   cursorColor: Theme.of(context).accentColor,
                                   cursorWidth: 1.4,
@@ -381,9 +381,8 @@ class _AddSongPageState extends State<AddSongPage> {
                                           letterSpacing: 0.6),
                                     ),
                                   ),
-                                  (state.audio == null ||
-                                          state.audio.metas == null ||
-                                          state.audio.metas.image == null)
+                                  (addSongBloc.songDetails == null ||
+                                      addSongBloc.songDetails.imagePath == null)
                                       ? Icon(Icons.close,
                                           color: Colors.red[400])
                                       : Icon(
@@ -395,34 +394,42 @@ class _AddSongPageState extends State<AddSongPage> {
                               height: 200,
                               width: 200,
                               decoration: BoxDecoration(
-                                  image: (state == null ||
-                                          state.audio == null ||
-                                          state.audio.metas == null ||
-                                          state.audio.metas.image == null)
+                                  image: (addSongBloc.songDetails == null ||
+                                      addSongBloc.songDetails.imagePath == null)
                                       ? DecorationImage(
                                           image: NetworkImage(
                                               'https://cdn0.iconfinder.com/data/icons/internet-2020/1080/Applemusicandroid-512.png'))
                                       : DecorationImage(
                                           image: FileImage(File(
-                                              state.audio.metas.image.path)))),
+                                              addSongBloc.songDetails.imagePath)))),
                             ),
                             RaisedButton(
                                 onPressed: () {
                                   int genre = 0;
+                                  List<String> genres = [];
                                   isSelected.forEach((key, value) {
-                                    if (value) genre++;
+                                    if (value) {
+                                      genres.add(key);
+                                      genre++;
+                                    }
                                   });
                                   if (nameController.text.isEmpty ||
                                       albumNameController.text.isEmpty ||
                                       artistController.text.isEmpty ||
                                       genre == 0) {
                                     showDialog(
-                                      context: context,
-                                      child: AlertDialog(
-                                        backgroundColor: Colors.red,
-                                        content: Text('Error'),
-                                      )
-                                    );
+                                        context: context,
+                                        child: AlertDialog(
+                                          backgroundColor: Colors.red,
+                                          content: Text('Error'),
+                                        ));
+                                  } else {
+                                    BlocProvider.of<AddSongBloc>(context)
+                                      ..add(AddMusicToLibrary(
+                                          track: nameController.text,
+                                          album: albumNameController.text,
+                                          artist: artistController.text,
+                                          genres: genres));
                                   }
                                 },
                                 shape: RoundedRectangleBorder(
@@ -459,6 +466,11 @@ class _AddSongPageState extends State<AddSongPage> {
                         )
                       ])),
                 );
+              else if (state is GoBackToDashboard) {
+                
+                BlocProvider.of<DashboardBloc>(context)..add(MainDashboard());
+                return CircularProgressIndicator();
+              }
             }));
   }
 }

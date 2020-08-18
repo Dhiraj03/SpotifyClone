@@ -17,25 +17,34 @@ class SongDetailsModelAdapter extends TypeAdapter<SongDetailsModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SongDetailsModel(
-      albumArt: fields[1] as AlbumArtModel,
-      genres: (fields[2] as List)?.cast<String>(),
-      song: fields[0] as Audio,
-      songID: fields[3] as int,
+      album: fields[1] as String,
+      artists: fields[2] as String,
+      genres: (fields[3] as List)?.cast<String>(),
+      imagePath: fields[4] as String,
+      path: fields[6] as String,
+      songID: fields[5] as int,
+      title: fields[0] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, SongDetailsModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.song)
+      ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.albumArt)
+      ..write(obj.album)
       ..writeByte(2)
-      ..write(obj.genres)
+      ..write(obj.artists)
       ..writeByte(3)
-      ..write(obj.songID);
+      ..write(obj.genres)
+      ..writeByte(4)
+      ..write(obj.imagePath)
+      ..writeByte(5)
+      ..write(obj.songID)
+      ..writeByte(6)
+      ..write(obj.path);
   }
 
   @override

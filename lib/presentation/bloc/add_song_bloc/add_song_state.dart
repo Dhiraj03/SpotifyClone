@@ -4,10 +4,6 @@ abstract class AddSongState {
   const AddSongState();
 }
 
-class AddSongInitial extends AddSongState {
-  Audio audio;
-  SongDetailsModel songDetails;
-  AddSongInitial({this.audio, this.songDetails});
-  @override
-  List<Object> get props => [songDetails, audio];
-}
+class AddSongInitial extends AddSongState {}
+
+class GoBackToDashboard extends AddSongState {}
