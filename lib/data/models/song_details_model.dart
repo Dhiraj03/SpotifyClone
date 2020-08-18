@@ -16,5 +16,6 @@ class SongDetailsModel extends Equatable {
   List<String> genres;
   @HiveField(3)
   int songID;
+  SongDetailsModel({this.albumArt, this.genres, this.song, this.songID});
   List<Object> get props => <dynamic>[song, albumArt, genres, songID];
 }

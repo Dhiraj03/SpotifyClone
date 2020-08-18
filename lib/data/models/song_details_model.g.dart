@@ -16,11 +16,12 @@ class SongDetailsModelAdapter extends TypeAdapter<SongDetailsModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SongDetailsModel()
-      ..song = fields[0] as Audio
-      ..albumArt = fields[1] as AlbumArtModel
-      ..genres = (fields[2] as List)?.cast<String>()
-      ..songID = fields[3] as int;
+    return SongDetailsModel(
+      albumArt: fields[1] as AlbumArtModel,
+      genres: (fields[2] as List)?.cast<String>(),
+      song: fields[0] as Audio,
+      songID: fields[3] as int,
+    );
   }
 
   @override

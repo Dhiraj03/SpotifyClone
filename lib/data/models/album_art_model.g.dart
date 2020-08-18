@@ -16,7 +16,9 @@ class AlbumArtModelAdapter extends TypeAdapter<AlbumArtModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return AlbumArtModel()..image = fields[0] as Image;
+    return AlbumArtModel(
+      image: fields[0] as Image,
+    );
   }
 
   @override

@@ -12,3 +12,8 @@ class PickMusicEvent extends AddSongEvent {
   @override
   List<Object> get props => [];
 }
+
+class PickMusicArt extends AddSongEvent {
+  @override
+  List<Object> get props => [];
+}

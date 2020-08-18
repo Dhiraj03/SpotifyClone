@@ -10,6 +10,7 @@ part 'album_art_model.g.dart';
 class AlbumArtModel extends Equatable {
   @HiveField(0)
   Image image;
+  AlbumArtModel({this.image});
   @override
   List<Object> get props => [image];
 }
