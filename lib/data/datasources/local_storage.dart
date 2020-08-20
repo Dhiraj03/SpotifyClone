@@ -36,4 +36,8 @@ class LocalStorage {
     if (songsBox.isEmpty) return 0;
     return songsBox.length;
   }
+
+  void deleteSongs() {
+    songsBox.deleteFromDisk();
+  }
 }

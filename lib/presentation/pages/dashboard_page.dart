@@ -95,6 +95,7 @@ class _DashboardPageState extends State<DashboardPage>
                       ]),
                 ),
                 body: PageView(
+                  
                   controller: pageController,
                   children: <Widget>[HomePage(), LibraryPage()],
                 ),
