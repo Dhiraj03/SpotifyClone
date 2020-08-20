@@ -95,7 +95,9 @@ class _DashboardPageState extends State<DashboardPage>
                       ]),
                 ),
                 body: PageView(
-                  
+                  pageSnapping: true,
+                  physics: PageScrollPhysics(),
+          
                   controller: pageController,
                   children: <Widget>[HomePage(), LibraryPage()],
                 ),

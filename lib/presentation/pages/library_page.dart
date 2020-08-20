@@ -5,6 +5,7 @@ import 'package:SpotifyClone/data/datasources/local_storage.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ class LibraryPage extends StatefulWidget {
 
 class _LibraryPageState extends State<LibraryPage> {
   final LocalStorage localStorage = LocalStorage();
+
   @override
   Widget build(BuildContext context) {
     print(localStorage.getSongsLength());
@@ -40,30 +42,34 @@ class _LibraryPageState extends State<LibraryPage> {
                 var tempSong = localStorage.getSong(index);
                 print(localStorage.getSong(index).title);
                 return ListTile(
-                  onTap: () {
-                    Provider.of<AudioPlayer>(context, listen: false).playSong(tempSong.songID);
-                  },
-                  leading: Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: FileImage(File(tempSong.imagePath)),
-                            fit: BoxFit.cover)),
-                  ),
-                  title: Text(tempSong.title),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(tempSong.album),
-                      Text('  .  '),
-                      Text(tempSong.artists)
-                    ],
-                  ),
-                );
+                    onTap: () {
+                      Provider.of<AudioPlayer>(context, listen: false)
+                          .playSong(tempSong.songID);
+                    },
+                    leading: Container(
+                      height: 100,
+                      width: 70,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: FileImage(File(tempSong.imagePath)),
+                              fit: BoxFit.fitWidth)),
+                    ),
+                    
+                    trailing: PopupMenuButton(
+                    onSelected: (value) {},
+                    child: Icon(Icons.more_vert, color: Colors.grey,),
+                    itemBuilder: (BuildContext context) {
+                      print('inside');
+                      List<PopupMenuItem> lol = [PopupMenuItem(child : Text('lol'))];
+                      return lol;
+                    }),
+                    title: Text(tempSong.title),
+                    isThreeLine: true,
+                    subtitle:
+                        Text(tempSong.album + '  ~  ' + tempSong.artists));
               },
             ),
-          )
+          ),
         ],
       ),
     );

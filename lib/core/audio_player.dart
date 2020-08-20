@@ -8,7 +8,8 @@ class AudioPlayer extends ChangeNotifier {
   final LocalStorage localStorage = LocalStorage();
   Future<void> playSong(int id) async {
     var tempSong = audioFromSongDetails(localStorage.getSong(id));
-    if (await audioPlayer.isPlaying.first) audioPlayer.stop();
+  
+    audioPlayer.stop();
     audioPlayer.open(tempSong, showNotification: true);
   }
 }
