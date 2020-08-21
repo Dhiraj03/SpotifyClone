@@ -161,11 +161,6 @@ class _DashboardPageState extends State<DashboardPage>
                                               }),
                                         ],
                                       );
-
-                                      //
-                                      // title:
-                                      // isThreeLine: true,
-                                      // subtitle:
                                     }
                                     return Container(height: 0, width: 0);
                                   }),

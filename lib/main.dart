@@ -3,6 +3,7 @@ import 'package:SpotifyClone/data/models/album_art_model.dart';
 import 'package:SpotifyClone/data/models/playlist_model.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:SpotifyClone/presentation/pages/dashboard_page.dart';
+import 'package:SpotifyClone/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
+        onGenerateRoute: Router.onGenerateRoute,
+        navigatorKey: Router.navigatorKey,
         title: 'SpotifyClone',
         home: ChangeNotifierProvider<AudioPlayer>(
             create: (_) => AudioPlayer(), child: DashboardPage()));
