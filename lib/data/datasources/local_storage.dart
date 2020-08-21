@@ -3,10 +3,11 @@ import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:hive/hive.dart';
 
 class LocalStorage {
-  Box songsBox, playlistsBox;
+  Box songsBox, playlistsBox, lastPlayedBox;
   LocalStorage() {
     songsBox = Hive.box('songs');
     playlistsBox = Hive.box('playlists');
+    lastPlayedBox = Hive.box('last_played');
   }
 
   Future<void> addSong(SongDetailsModel song) async {
@@ -39,5 +40,13 @@ class LocalStorage {
 
   void deleteSongs() {
     songsBox.deleteFromDisk();
+  }
+
+  SongDetailsModel getLastPlayedSong() {
+    return lastPlayedBox.get('first');
+  }
+
+  Future<void> storeLastPlayedSong(SongDetailsModel song) async {
+    return (await lastPlayedBox.put('first', song));
   }
 }

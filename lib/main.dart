@@ -15,7 +15,7 @@ void main() async {
   Hive.registerAdapter(AlbumArtModelAdapter());
   Hive.registerAdapter(SongDetailsModelAdapter());
   Hive.registerAdapter(PlaylistModelAdapter());
-  
+  await Hive.openBox('last_played');
   await Hive.openBox('songs');
   await Hive.openBox('playlists');
   runApp(MyApp());
