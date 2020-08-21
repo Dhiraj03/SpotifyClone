@@ -78,21 +78,46 @@ class _DashboardPageState extends State<DashboardPage>
                                       var tempSong =
                                           Provider.of<AudioPlayer>(context)
                                               .getLastPlayed();
-                                      return ListTile(
-                                          leading: Container(
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Container(
                                             height: 50,
-                                            width: 70,
+                                            width: 50,
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                     image: FileImage(File(
                                                         tempSong.imagePath)),
-                                                    fit: BoxFit.fitHeight)),
+                                                    fit: BoxFit.fill)),
                                           ),
-                                          trailing: StreamBuilder(
+                                          Container(
+                                            width: 150,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(tempSong.title),
+                                                SizedBox(
+                                                  height: 6,
+                                                ),
+                                                Text(
+                                                  tempSong.artists,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 40,
+                                          ),
+                                          StreamBuilder(
                                               stream: Provider.of<AudioPlayer>(
                                                       context)
                                                   .isPlaying(),
-                                              // ignore: missing_return
                                               builder: (BuildContext context,
                                                   AsyncSnapshot snapshot1) {
                                                 if (!snapshot1.hasData ||
@@ -134,19 +159,25 @@ class _DashboardPageState extends State<DashboardPage>
                                                         }
                                                       });
                                               }),
-                                          title: Text(tempSong.title),
-                                          isThreeLine: true,
-                                          subtitle: Text(tempSong.album +
-                                              '  ~  ' +
-                                              tempSong.artists));
+                                        ],
+                                      );
+
+                                      //
+                                      // title:
+                                      // isThreeLine: true,
+                                      // subtitle:
                                     }
-                                    return Text('not playing');
+                                    return Container(height: 0, width: 0);
                                   }),
                             ),
                           ),
                           Expanded(
                             flex: 10,
                             child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      top: BorderSide(
+                                          color: Colors.black, width: 1.5))),
                               child: TabBar(
                                   indicatorColor: Color(0xFFBB86FC),
                                   indicatorWeight: 3,
