@@ -7,12 +7,14 @@ import 'package:SpotifyClone/presentation/bloc/dashboard_bloc/dashboard_bloc.dar
 import 'package:SpotifyClone/presentation/pages/add_song_page.dart';
 import 'package:SpotifyClone/presentation/pages/home_page.dart';
 import 'package:SpotifyClone/presentation/pages/library_page.dart';
+import 'package:SpotifyClone/routes/router.gr.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -59,7 +61,12 @@ class _DashboardPageState extends State<DashboardPage>
                         children: <Widget>[
                           Expanded(
                             flex: 12,
-                            child: Container(
+                            child:  GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                Router.navigator.pushNamed(Router.songPage);
+                              },
+                              child:Container(
                               padding: EdgeInsets.zero,
                               alignment: Alignment.center,
                               child: StreamBuilder(
@@ -114,120 +121,128 @@ class _DashboardPageState extends State<DashboardPage>
                                           SizedBox(
                                             width: 40,
                                           ),
-                                          StreamBuilder(
-                                              stream: Provider.of<AudioPlayer>(
-                                                      context)
-                                                  .isPlaying(),
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot snapshot1) {
-                                                if (!snapshot1.hasData ||
-                                                    snapshot1.connectionState ==
-                                                        ConnectionState
-                                                            .waiting ||
-                                                    snapshot1.hasError)
-                                                  return Container(
-                                                    height: 0,
-                                                    width: 0,
-                                                  );
-                                                else if (snapshot1
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .active ||
-                                                    snapshot1.connectionState ==
-                                                        ConnectionState.done)
-                                                  return IconButton(
-                                                      icon: snapshot1.data
-                                                          ? Icon(Icons.pause)
-                                                          : Icon(
-                                                              Icons.play_arrow),
-                                                      onPressed: () async {
-                                                        if ((snapshot1.data ==
-                                                                    false ||
-                                                                !snapshot1
-                                                                    .hasData) &&
-                                                            !snapshot.hasData) {
-                                                          Provider.of<AudioPlayer>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .playRecentSong();
-                                                        } else {
-                                                          await Provider.of<
-                                                                      AudioPlayer>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .playOrPause();
-                                                        }
-                                                      });
-                                              }),
+                                          // StreamBuilder(
+                                          //     stream:
+                                          //         Provider.of<AudioPlayer>(
+                                          //                 context)
+                                          //             .isPlaying(),
+                                          //     // ignore: missing_return
+                                          //     builder: (BuildContext context,
+                                          //         AsyncSnapshot snapshot1) {
+                                          //       if (!snapshot1.hasData ||
+                                          //           snapshot1
+                                          //                   .connectionState ==
+                                          //               ConnectionState
+                                          //                   .waiting ||
+                                          //           snapshot1.hasError)
+                                          //         return Container(
+                                          //           height: 0,
+                                          //           width: 0,
+                                          //         );
+                                          //       else if (snapshot1
+                                          //                   .connectionState ==
+                                          //               ConnectionState
+                                          //                   .active ||
+                                          //           snapshot1
+                                          //                   .connectionState ==
+                                          //               ConnectionState.done)
+                                          //         return IconButton(
+                                          //             icon: snapshot1.data
+                                          //                 ? Icon(Icons.pause)
+                                          //                 : Icon(Icons
+                                          //                     .play_arrow),
+                                          //             onPressed: () async {
+                                          //               if ((snapshot1.data ==
+                                          //                           false ||
+                                          //                       !snapshot1
+                                          //                           .hasData) &&
+                                          //                   !snapshot
+                                          //                       .hasData) {
+                                          //                 Provider.of<AudioPlayer>(
+                                          //                         context,
+                                          //                         listen:
+                                          //                             false)
+                                          //                     .playRecentSong();
+                                          //               } else {
+                                          //                 await Provider.of<
+                                          //                             AudioPlayer>(
+                                          //                         context,
+                                          //                         listen:
+                                          //                             false)
+                                          //                     .playOrPause();
+                                          //               }
+                                          //             });
+                                          //     }),
                                         ],
                                       );
                                     }
                                     return Container(height: 0, width: 0);
                                   }),
-                            ),
+                            ),)
                           ),
                           Expanded(
                             flex: 10,
                             child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      top: BorderSide(
-                                          color: Colors.black, width: 1.5))),
-                              child: TabBar(
-                                  indicatorColor: Color(0xFFBB86FC),
-                                  indicatorWeight: 3,
-                                  onTap: (index) {
-                                    if (tabController.previousIndex !=
-                                        tabController.index) {
-                                      pageController
-                                          .jumpToPage(tabController.index);
-                                    }
-                                  },
-                                  indicatorSize: TabBarIndicatorSize.label,
-                                  indicatorPadding: EdgeInsets.zero,
-                                  labelPadding: EdgeInsets.zero,
-                                  controller: tabController,
-                                  tabs: [
-                                    Tab(
-                                      text: 'Home',
-                                      iconMargin: EdgeInsets.all(1),
-                                      icon: Icon(
-                                        Icons.home,
-                                        size: 26,
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        top: BorderSide(
+                                            color: Colors.black, width: 1.5))),
+                                child: TabBar(
+                                    indicatorColor: Color(0xFFBB86FC),
+                                    indicatorWeight: 3,
+                                    onTap: (index) {
+                                      if (tabController.previousIndex !=
+                                          tabController.index) {
+                                        pageController
+                                            .jumpToPage(tabController.index);
+                                      }
+                                    },
+                                    indicatorSize: TabBarIndicatorSize.label,
+                                    indicatorPadding: EdgeInsets.zero,
+                                    labelPadding: EdgeInsets.zero,
+                                    controller: tabController,
+                                    tabs: [
+                                      Tab(
+                                        text: 'Home',
+                                        iconMargin: EdgeInsets.all(1),
+                                        icon: Icon(
+                                          Icons.home,
+                                          size: 26,
+                                        ),
+                                        // child: Text(
+                                        //   'Home',
+                                        //   style: GoogleFonts.montserrat(
+                                        //       fontSize: 12),
+                                        // ),
                                       ),
-                                      // child: Text(
-                                      //   'Home',
-                                      //   style: GoogleFonts.montserrat(
-                                      //       fontSize: 12),
-                                      // ),
-                                    ),
-                                    Tab(
-                                      iconMargin: EdgeInsets.all(1),
-                                      icon: Icon(
-                                        Icons.search,
-                                        size: 26,
+                                      Tab(
+                                        iconMargin: EdgeInsets.all(1),
+                                        icon: Icon(
+                                          Icons.search,
+                                          size: 26,
+                                        ),
+                                        child: Text(
+                                          'Search',
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 12),
+                                        ),
                                       ),
-                                      child: Text(
-                                        'Search',
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 12),
+                                      Tab(
+                                        iconMargin: EdgeInsets.all(1),
+                                        icon: Icon(
+                                          MaterialIcons.library_music,
+                                          size: 26,
+                                        ),
+                                        child: Text(
+                                          'My Music',
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 12),
+                                        ),
                                       ),
-                                    ),
-                                    Tab(
-                                      iconMargin: EdgeInsets.all(1),
-                                      icon: Icon(
-                                        MaterialIcons.library_music,
-                                        size: 26,
-                                      ),
-                                      child: Text(
-                                        'My Music',
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ]),
+                                    ]),
+                              ),
                             ),
-                          ),
+                          
                         ]),
                   ),
                   body: PageView(
