@@ -10,6 +10,10 @@ class AudioPlayer extends ChangeNotifier {
   final audioPlayer = AssetsAudioPlayer();
   final LocalStorage localStorage = LocalStorage();
   Future<void> playSong(int id) async {
+    if (audioPlayer.isPlaying.value != null) {
+      audioPlayer.play();
+    }
+
     var tempSongDetails = localStorage.getSong(id);
     var tempSong = audioFromSongDetails(tempSongDetails);
     await localStorage.storeLastPlayedSong(tempSongDetails);
@@ -31,8 +35,7 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   Future<void> playRecentSong() async {
-    if (audioPlayer.current.value != null) 
-       await audioPlayer.stop();
+    if (audioPlayer.current.value != null) await audioPlayer.stop();
     var songDetails = localStorage.getLastPlayedSong();
     var audioSong = audioFromSongDetails(songDetails);
     await audioPlayer.open(audioSong, showNotification: true);
@@ -70,10 +73,17 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   void seek(int seconds) {
+    print('wtff');
     Duration seekDuration = Duration(seconds: seconds);
-    if (audioPlayer.isPlaying.value != null) {
+    if (audioPlayer.isPlaying.value) {
+      print('1');
       audioPlayer.seek(seekDuration);
+    } else if (audioPlayer.isPlaying.value == false) {
+      print('3');
+      audioPlayer.seek(seekDuration);
+      audioPlayer.play();
     } else {
+      print('2');
       audioPlayer.open(
           Audio.file(
               audioFromSongDetails(localStorage.getLastPlayedSong()).path),

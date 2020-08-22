@@ -129,7 +129,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               print(snap.data);
                               print(currentSongDuration);
                               return Slider(
-                                value: snap.data == null ? 0  : snap.data.toDouble(),
+                                value: snap.data.toDouble(),
                                 min: 0,
                                 max: currentSongDuration.toDouble(),
                                 onChanged: (value) {
@@ -140,7 +140,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                             } else {
                               print('whatt');
                               return Slider(
-                                value: snap.data == null ? 0  : snap.data.toDouble(),
+                                value: 0,
                                 min: 0,
                                 max: currentSongDuration.toDouble(),
                                 onChanged: (value) {
