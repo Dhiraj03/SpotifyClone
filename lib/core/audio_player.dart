@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:SpotifyClone/core/hive_model_converter.dart';
 import 'package:SpotifyClone/data/datasources/local_storage.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
@@ -9,8 +11,8 @@ class AudioPlayer extends ChangeNotifier {
   final LocalStorage localStorage = LocalStorage();
   Future<void> playSong(int id) async {
     var tempSongDetails = localStorage.getSong(id);
-    await localStorage.storeLastPlayedSong(tempSongDetails);
     var tempSong = audioFromSongDetails(tempSongDetails);
+    await localStorage.storeLastPlayedSong(tempSongDetails);
     audioPlayer.stop();
     audioPlayer.open(tempSong,
         showNotification: true, notificationSettings: NotificationSettings());
@@ -25,15 +27,14 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   Future<void> playOrPause() async {
-     
-      await audioPlayer.playOrPause();
+    await audioPlayer.playOrPause();
   }
 
-   Future<void> playRecentSong() async{
+  Future<void> playRecentSong() async {
     var songDetails = localStorage.getLastPlayedSong();
     var audioSong = audioFromSongDetails(songDetails);
     await audioPlayer.open(audioSong, showNotification: true);
-   }
+  }
 
   Future<void> shuffle(Playlist playlist) async {}
 
@@ -41,11 +42,21 @@ class AudioPlayer extends ChangeNotifier {
     return audioPlayer.isPlaying;
   }
 
-  Stream<Playing> getCurrentlyPlaying() {
-    return audioPlayer.current;
+  Stream<SongDetailsModel> getCurrentlyPlaying() {
+    return audioPlayer.current.map((event) {
+      return localStorage.getSong(int.parse(event.audio.audio.metas.id));
+    });
   }
 
   SongDetailsModel getLastPlayed() {
     return localStorage.getLastPlayedSong();
+  }
+
+  int getDurationOfCurrentSong() {
+    return audioPlayer.current.value.audio.duration.inSeconds;
+  }
+
+  Stream<int> getCurrentPosition() {
+    return audioPlayer.currentPosition.map((event) => event.inSeconds);
   }
 }

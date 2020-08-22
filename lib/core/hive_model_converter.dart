@@ -4,6 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 Audio audioFromSongDetails(SongDetailsModel hiveSong) {
   Audio tempSong = Audio.file(hiveSong.path,
       metas: Metas(
+        id: hiveSong.songID.toString(),
           title: hiveSong.title,
           artist: hiveSong.artists,
           album: hiveSong.album,

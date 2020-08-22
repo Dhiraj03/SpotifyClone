@@ -19,6 +19,7 @@ void main() async {
   await Hive.openBox('last_played');
   await Hive.openBox('songs');
   await Hive.openBox('playlists');
+  await Hive.openBox('current_duration');
   runApp(MyApp());
 }
 
@@ -26,13 +27,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
-        onGenerateRoute: Router.onGenerateRoute,
-        navigatorKey: Router.navigatorKey,
-        title: 'SpotifyClone',
-        home: ChangeNotifierProvider<AudioPlayer>(
-            create: (_) => AudioPlayer(), child: DashboardPage()));
+    return ChangeNotifierProvider<AudioPlayer>(
+        create: (_) => AudioPlayer(),
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.dark(),
+            onGenerateRoute: Router.onGenerateRoute,
+            navigatorKey: Router.navigatorKey,
+            title: 'SpotifyClone',
+            home: DashboardPage()));
   }
 }
