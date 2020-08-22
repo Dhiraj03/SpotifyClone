@@ -53,10 +53,16 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   int getDurationOfCurrentSong() {
+    if (audioPlayer.current.value == null) return 0;
     return audioPlayer.current.value.audio.duration.inSeconds;
   }
 
   Stream<int> getCurrentPosition() {
     return audioPlayer.currentPosition.map((event) => event.inSeconds);
+  }
+
+  void seek(int seconds) {
+    Duration seekDuration = Duration(seconds: seconds);
+    audioPlayer.seek(seekDuration);
   }
 }

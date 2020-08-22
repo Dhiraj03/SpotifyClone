@@ -43,9 +43,8 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
             stream: Provider.of<AudioPlayer>(context).getCurrentlyPlaying(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               print(snapshot.data);
-              if (snapshot.hasData ||
-                  snapshot.connectionState == ConnectionState.active ||
-                  snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.active ) {
                 int currentSongDuration = Provider.of<AudioPlayer>(context)
                     .getDurationOfCurrentSong();
                 return Padding(
@@ -74,7 +73,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                         StreamBuilder<Object>(
                             stream: Provider.of<AudioPlayer>(context)
                                 .getCurrentPosition(),
-                            builder: (context, AsyncSnapshot snap) {
+                            builder: (context1, AsyncSnapshot snap) {
                               if (snap.hasData) {
                                 print(snap.data);
                                 print(currentSongDuration);
@@ -82,14 +81,16 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   value: snap.data.toDouble(),
                                   min: 0,
                                   max: currentSongDuration.toDouble(),
-                                  
+                                  onChanged: (value) {
+                                    Provider.of<AudioPlayer>(context, listen:false)
+                                        .seek(value.toInt());
+                                  },
                                 );
                               }
-                              
                             })
                       ],
                     ));
-              } else if (!snapshot.hasData) {
+              } else {
                 var tempSong = localStorage.getLastPlayedSong();
 
                 return Padding(
