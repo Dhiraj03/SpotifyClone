@@ -44,7 +44,8 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               print(snapshot.data);
               if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.active ) {
+                  (snapshot.connectionState == ConnectionState.active ||
+                      snapshot.connectionState == ConnectionState.done)) {
                 int currentSongDuration = Provider.of<AudioPlayer>(context)
                     .getDurationOfCurrentSong();
                 return Padding(
@@ -80,9 +81,10 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 return Slider(
                                   value: snap.data.toDouble(),
                                   min: 0,
-                                  max: currentSongDuration.toDouble(),
+                                  max: (currentSongDuration+1).toDouble(),
                                   onChanged: (value) {
-                                    Provider.of<AudioPlayer>(context, listen:false)
+                                    Provider.of<AudioPlayer>(context,
+                                            listen: false)
                                         .seek(value.toInt());
                                   },
                                 );
@@ -91,6 +93,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                       ],
                     ));
               } else {
+                print('inside');
                 var tempSong = localStorage.getLastPlayedSong();
 
                 return Padding(
@@ -119,11 +122,34 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           stream: Provider.of<AudioPlayer>(context)
                               .getCurrentPosition(),
                           builder: (context, AsyncSnapshot snap) {
+                            int currentSongDuration =
+                                Provider.of<AudioPlayer>(context)
+                                    .getDurationOfCurrentSong();
                             if (snap.hasData) {
                               print(snap.data);
+                              print(currentSongDuration);
+                              return Slider(
+                                value: snap.data == null ? 0  : snap.data.toDouble(),
+                                min: 0,
+                                max: currentSongDuration.toDouble(),
+                                onChanged: (value) {
+                                  Provider.of<AudioPlayer>(context, listen:false)
+                                      .seek(value.toInt());
+                                },
+                              );
+                            } else {
+                              print('whatt');
+                              return Slider(
+                                value: snap.data == null ? 0  : snap.data.toDouble(),
+                                min: 0,
+                                max: currentSongDuration.toDouble(),
+                                onChanged: (value) {
+                                  print('damn');
+                                  Provider.of<AudioPlayer>(context, listen:false)
+                                      .seek(value.toInt());
+                                },
+                              );
                             }
-                            print(snapshot.data);
-                            return Container();
                           })
                     ],
                   ),

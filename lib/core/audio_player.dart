@@ -31,6 +31,8 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   Future<void> playRecentSong() async {
+    if (audioPlayer.current.value != null) 
+       await audioPlayer.stop();
     var songDetails = localStorage.getLastPlayedSong();
     var audioSong = audioFromSongDetails(songDetails);
     await audioPlayer.open(audioSong, showNotification: true);
@@ -53,16 +55,29 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   int getDurationOfCurrentSong() {
-    if (audioPlayer.current.value == null) return 0;
-    return audioPlayer.current.value.audio.duration.inSeconds;
+    if (audioPlayer.current.value == null) {
+      return localStorage.durationBox.get('first');
+    } else {
+      localStorage.durationBox
+          .put('first', audioPlayer.current.value.audio.duration.inSeconds);
+      return audioPlayer.current.value.audio.duration.inSeconds;
+    }
   }
 
   Stream<int> getCurrentPosition() {
+    if (audioPlayer.current.value == null) return Stream.fromIterable([0]);
     return audioPlayer.currentPosition.map((event) => event.inSeconds);
   }
 
   void seek(int seconds) {
     Duration seekDuration = Duration(seconds: seconds);
-    audioPlayer.seek(seekDuration);
+    if (audioPlayer.isPlaying.value != null) {
+      audioPlayer.seek(seekDuration);
+    } else {
+      audioPlayer.open(
+          Audio.file(
+              audioFromSongDetails(localStorage.getLastPlayedSong()).path),
+          seek: seekDuration);
+    }
   }
 }
