@@ -5,6 +5,8 @@ import 'package:SpotifyClone/data/datasources/local_storage.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/streams.dart';
 
 class AudioPlayer extends ChangeNotifier {
   final audioPlayer = AssetsAudioPlayer();
@@ -97,5 +99,13 @@ class AudioPlayer extends ChangeNotifier {
               audioFromSongDetails(localStorage.getLastPlayedSong()).path),
           seek: seekDuration);
     }
+  }
+
+  Stream<List> getCurrentStream() {
+    Stream currentlyPlayingStream = audioPlayer.current;
+    Stream currentPositionStream = audioPlayer.currentPosition;
+    Stream playStatus = audioPlayer.isPlaying;
+    Rx.combineLatest3(currentlyPlayingStream, currentPositionStream, playStatus,
+        (a, b, c) => [a, b, c]);
   }
 }

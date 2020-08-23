@@ -38,7 +38,7 @@ dependencies:
   flutter_icons: ^1.1.0
   image_picker: ^0.6.7+4
   auto_route: ^0.2.1
-  sliding_up_panel: ^1.0.2
+  rxdart: ^0.24.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

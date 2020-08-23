@@ -49,9 +49,9 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                 int currentSongDuration = Provider.of<AudioPlayer>(context)
                     .getDurationOfCurrentSong();
                 return Padding(
-                    padding: EdgeInsets.only(top: 60.0, left: 45, right: 30),
+                    padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Container(
                             child: Image.file(File(snapshot.data.imagePath))),
