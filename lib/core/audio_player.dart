@@ -31,7 +31,10 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   Future<void> playOrPause() async {
-    await audioPlayer.playOrPause();
+    if (audioPlayer.current.hasValue)
+      await audioPlayer.playOrPause();
+    else
+      playRecentSong();
   }
 
   Future<void> playRecentSong() async {

@@ -72,7 +72,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 fontWeight: FontWeight.w600,
                                 height: 1.5)),
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,35 +87,40 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   onPressed: () {}),
                             ),
                             Expanded(
-                              child: StreamBuilder<Object>(
-                                  stream: Provider.of<AudioPlayer>(context)
-                                      .isPlaying(),
-                                  builder: (context, isPlaySnap) {
-                                    if (isPlaySnap.hasData &&
-                                        isPlaySnap.connectionState ==
-                                            ConnectionState.active) {
-                                      return IconButton(
-                                          icon: isPlaySnap.data
-                                              ? Icon(
-                                                  MaterialCommunityIcons
-                                                      .pause_circle,
-                                                  size: 70)
-                                              : Icon(
-                                                  MaterialCommunityIcons
-                                                      .play_circle,
-                                                  size: 70),
-                                          onPressed: () {
-                                            Provider.of<AudioPlayer>(context,
-                                                    listen: false)
-                                                .playOrPause();
-                                          });
-                                    } else {
-                                      return Container(
-                                        height: 0,
-                                        width: 0,
-                                      );
-                                    }
-                                  }),
+                              
+                              child: Container(
+                                child: StreamBuilder<Object>(
+                                    
+                                    stream: Provider.of<AudioPlayer>(context)
+                                        .isPlaying(),
+                                    builder: (context, isPlaySnap) {
+                                      if (isPlaySnap.hasData &&
+                                          isPlaySnap.connectionState ==
+                                              ConnectionState.active) {
+                                        return IconButton(
+                                          padding: EdgeInsets.zero,
+                                            icon: isPlaySnap.data
+                                                ? Icon(
+                                                    MaterialCommunityIcons
+                                                        .pause_circle,
+                                                    size: 70)
+                                                : Icon(
+                                                    MaterialCommunityIcons
+                                                        .play_circle,
+                                                    size: 70),
+                                            onPressed: () {
+                                              Provider.of<AudioPlayer>(context,
+                                                      listen: false)
+                                                  .playOrPause();
+                                            });
+                                      } else {
+                                        return Container(
+                                          height: 0,
+                                          width: 0,
+                                        );
+                                      }
+                                    }),
+                              ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 20, right: 5),
@@ -197,35 +202,40 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 onPressed: () {}),
                           ),
                           Expanded(
-                            child: StreamBuilder<Object>(
-                                stream: Provider.of<AudioPlayer>(context)
-                                    .isPlaying(),
-                                builder: (context, isPlaySnap) {
-                                  if (isPlaySnap.hasData &&
-                                      isPlaySnap.connectionState ==
-                                          ConnectionState.active) {
-                                    return IconButton(
-                                        icon: isPlaySnap.data
-                                            ? Icon(
-                                                MaterialCommunityIcons
-                                                    .pause_circle,
-                                                size: 70)
-                                            : Icon(
-                                                MaterialCommunityIcons
-                                                    .play_circle,
-                                                size: 70),
-                                        onPressed: () {
-                                          Provider.of<AudioPlayer>(context,
-                                                  listen: false)
-                                              .playOrPause();
-                                        });
-                                  } else {
-                                    return Container(
-                                      height: 0,
-                                      width: 0,
-                                    );
-                                  }
-                                }),
+                              
+                            child: Container(
+                              child: StreamBuilder<Object>(
+                                    
+                                  stream: Provider.of<AudioPlayer>(context)
+                                      .isPlaying(),
+                                  builder: (context, isPlaySnap) {
+                                    if (isPlaySnap.hasData &&
+                                        isPlaySnap.connectionState ==
+                                            ConnectionState.active) {
+                                      return IconButton(
+                                        padding: EdgeInsets.zero,
+                                          icon: isPlaySnap.data
+                                              ? Icon(
+                                                  MaterialCommunityIcons
+                                                      .pause_circle,
+                                                  size: 70)
+                                              : Icon(
+                                                  MaterialCommunityIcons
+                                                      .play_circle,
+                                                  size: 70),
+                                          onPressed: () {
+                                            Provider.of<AudioPlayer>(context,
+                                                    listen: false)
+                                                .playOrPause();
+                                          });
+                                    } else {
+                                      return Container(
+                                        height: 0,
+                                        width: 0,
+                                      );
+                                    }
+                                  }),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20, right: 5),
@@ -242,6 +252,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                       SizedBox(
                         height: 30,
                       ),
+                      
                       StreamBuilder<Object>(
                           stream: Provider.of<AudioPlayer>(context)
                               .getCurrentPosition(),
