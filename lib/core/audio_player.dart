@@ -47,6 +47,10 @@ class AudioPlayer extends ChangeNotifier {
     return audioPlayer.isPlaying;
   }
 
+  bool isPlayingAtThisInstant() {
+    return audioPlayer.isPlaying.value;
+  }
+
   Stream<SongDetailsModel> getCurrentlyPlaying() {
     return audioPlayer.current.map((event) {
       return localStorage.getSong(int.parse(event.audio.audio.metas.id));
@@ -76,14 +80,15 @@ class AudioPlayer extends ChangeNotifier {
     print('wtff');
     Duration seekDuration = Duration(seconds: seconds);
     if (audioPlayer.isPlaying.value) {
-      print('1');
+      print('code 1');
       audioPlayer.seek(seekDuration);
+      audioPlayer.pause();
     } else if (audioPlayer.isPlaying.value == false) {
-      print('3');
+      print('code 3');
       audioPlayer.seek(seekDuration);
       audioPlayer.play();
     } else {
-      print('2');
+      print('code 2');
       audioPlayer.open(
           Audio.file(
               audioFromSongDetails(localStorage.getLastPlayedSong()).path),

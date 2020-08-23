@@ -5,6 +5,7 @@ import 'package:SpotifyClone/core/hive_model_converter.dart';
 import 'package:SpotifyClone/data/datasources/local_storage.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -43,9 +44,8 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
             stream: Provider.of<AudioPlayer>(context).getCurrentlyPlaying(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               print(snapshot.data);
-              if (snapshot.hasData &&
-                  (snapshot.connectionState == ConnectionState.active ||
-                      snapshot.connectionState == ConnectionState.done)) {
+              if ((snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.active)) {
                 int currentSongDuration = Provider.of<AudioPlayer>(context)
                     .getDurationOfCurrentSong();
                 return Padding(
@@ -71,6 +71,67 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 height: 1.5)),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: 20, right: 15),
+                              child: IconButton(
+                                  icon: Icon(
+                                    MaterialCommunityIcons.skip_previous,
+                                    size: 40,
+                                  ),
+                                  onPressed: () {}),
+                            ),
+                            Expanded(
+                              child: StreamBuilder<Object>(
+                                  stream: Provider.of<AudioPlayer>(context)
+                                      .isPlaying(),
+                                  builder: (context, isPlaySnap) {
+                                    if (isPlaySnap.hasData &&
+                                        isPlaySnap.connectionState ==
+                                            ConnectionState.active) {
+                                      return IconButton(
+                                          icon: isPlaySnap.data
+                                              ? Icon(
+                                                  MaterialCommunityIcons
+                                                      .pause_circle,
+                                                  size: 70)
+                                              : Icon(
+                                                  MaterialCommunityIcons
+                                                      .play_circle,
+                                                  size: 70),
+                                          onPressed: () {
+                                            Provider.of<AudioPlayer>(context,
+                                                    listen: false)
+                                                .playOrPause();
+                                          });
+                                    } else {
+                                      return Container(
+                                        height: 0,
+                                        width: 0,
+                                      );
+                                    }
+                                  }),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20, right: 5),
+                              child: IconButton(
+                                  icon: Icon(MaterialCommunityIcons.skip_next,
+                                      size: 40),
+                                  onPressed: () {}),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
                         StreamBuilder<Object>(
                             stream: Provider.of<AudioPlayer>(context)
                                 .getCurrentPosition(),
@@ -79,9 +140,11 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 print(snap.data);
                                 print(currentSongDuration);
                                 return Slider(
+                                  activeColor: Colors.white,
+                                  inactiveColor: Colors.grey,
                                   value: snap.data.toDouble(),
                                   min: 0,
-                                  max: (currentSongDuration+1).toDouble(),
+                                  max: (currentSongDuration + 1).toDouble(),
                                   onChanged: (value) {
                                     Provider.of<AudioPlayer>(context,
                                             listen: false)
@@ -118,6 +181,67 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               height: 1.5)),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 20, right: 15),
+                            child: IconButton(
+                                icon: Icon(
+                                  MaterialCommunityIcons.skip_previous,
+                                  size: 40,
+                                ),
+                                onPressed: () {}),
+                          ),
+                          Expanded(
+                            child: StreamBuilder<Object>(
+                                stream: Provider.of<AudioPlayer>(context)
+                                    .isPlaying(),
+                                builder: (context, isPlaySnap) {
+                                  if (isPlaySnap.hasData &&
+                                      isPlaySnap.connectionState ==
+                                          ConnectionState.active) {
+                                    return IconButton(
+                                        icon: isPlaySnap.data
+                                            ? Icon(
+                                                MaterialCommunityIcons
+                                                    .pause_circle,
+                                                size: 70)
+                                            : Icon(
+                                                MaterialCommunityIcons
+                                                    .play_circle,
+                                                size: 70),
+                                        onPressed: () {
+                                          Provider.of<AudioPlayer>(context,
+                                                  listen: false)
+                                              .playOrPause();
+                                        });
+                                  } else {
+                                    return Container(
+                                      height: 0,
+                                      width: 0,
+                                    );
+                                  }
+                                }),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20, right: 5),
+                            child: IconButton(
+                                icon: Icon(MaterialCommunityIcons.skip_next,
+                                    size: 40),
+                                onPressed: () {}),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
                       StreamBuilder<Object>(
                           stream: Provider.of<AudioPlayer>(context)
                               .getCurrentPosition(),
@@ -129,23 +253,29 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               print(snap.data);
                               print(currentSongDuration);
                               return Slider(
+                                inactiveColor: Colors.grey,
+                                activeColor: Colors.white,
                                 value: snap.data.toDouble(),
                                 min: 0,
                                 max: currentSongDuration.toDouble(),
                                 onChanged: (value) {
-                                  Provider.of<AudioPlayer>(context, listen:false)
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
                                       .seek(value.toInt());
                                 },
                               );
                             } else {
                               print('whatt');
                               return Slider(
+                                inactiveColor: Colors.grey,
+                                activeColor: Colors.white,
                                 value: 0,
                                 min: 0,
                                 max: currentSongDuration.toDouble(),
                                 onChanged: (value) {
                                   print('damn');
-                                  Provider.of<AudioPlayer>(context, listen:false)
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
                                       .seek(value.toInt());
                                 },
                               );

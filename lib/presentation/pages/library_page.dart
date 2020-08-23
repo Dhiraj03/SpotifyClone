@@ -54,15 +54,19 @@ class _LibraryPageState extends State<LibraryPage> {
                               image: FileImage(File(tempSong.imagePath)),
                               fit: BoxFit.fitWidth)),
                     ),
-                    
                     trailing: PopupMenuButton(
-                    onSelected: (value) {},
-                    child: Icon(Icons.more_vert, color: Colors.grey,),
-                    itemBuilder: (BuildContext context) {
-                      print('inside');
-                      List<PopupMenuItem> lol = [PopupMenuItem(child : Text('lol'))];
-                      return lol;
-                    }),
+                        onSelected: (value) {},
+                        child: Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                        ),
+                        itemBuilder: (BuildContext context) {
+                          print('inside');
+                          List<PopupMenuItem> lol = [
+                            PopupMenuItem(child: Text('lol'))
+                          ];
+                          return lol;
+                        }),
                     title: Text(tempSong.title),
                     isThreeLine: true,
                     subtitle:
