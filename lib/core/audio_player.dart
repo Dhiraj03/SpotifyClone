@@ -81,23 +81,14 @@ class AudioPlayer extends ChangeNotifier {
     return audioPlayer.currentPosition.map((event) => event.inSeconds);
   }
 
-  void seek(int seconds) {
-    print('wtff');
-    Duration seekDuration = Duration(seconds: seconds);
-    if (audioPlayer.isPlaying.value) {
-      print('code 1');
-      audioPlayer.seek(seekDuration);
-      audioPlayer.pause();
-    } else if (audioPlayer.isPlaying.value == false) {
-      print('code 3');
-      audioPlayer.seek(seekDuration);
-      audioPlayer.play();
-    } else {
-      print('code 2');
-      audioPlayer.open(
-          Audio.file(
-              audioFromSongDetails(localStorage.getLastPlayedSong()).path),
-          seek: seekDuration);
+  void seek(int seconds, bool isPlaying, Audio audio) {
+    Duration duration = Duration(seconds: seconds);
+    if (audio != null) {
+      audioPlayer.seek(duration, force: true);
+    }
+    else {
+      Audio recentAudio = audioFromSongDetails(localStorage.getLastPlayedSong());
+      audioPlayer.open(recentAudio, seek: duration);
     }
   }
 
@@ -105,7 +96,7 @@ class AudioPlayer extends ChangeNotifier {
     Stream currentlyPlayingStream = audioPlayer.current;
     Stream currentPositionStream = audioPlayer.currentPosition;
     Stream playStatus = audioPlayer.isPlaying;
-    Rx.combineLatest3(currentlyPlayingStream, currentPositionStream, playStatus,
-        (a, b, c) => [a, b, c]);
+    return Rx.combineLatest3(currentlyPlayingStream, currentPositionStream,
+        playStatus, (a, b, c) => [a, b, c]);
   }
 }

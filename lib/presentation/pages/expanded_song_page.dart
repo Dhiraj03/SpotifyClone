@@ -25,47 +25,45 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: FractionalOffset(0, 0),
-                end: FractionalOffset(1, 1),
-                colors: [
-              Color(0x4ECC0066),
-              Color(0x4EAA0055),
-              Color(0x4E880044),
-              Color(0x4E660033),
-              Color(0x4E440022),
-              Color(0x4E220011),
-              Theme.of(context).primaryColor.withAlpha(130)
-            ])),
-        child: StreamBuilder(
-            stream: Provider.of<AudioPlayer>(context).getCurrentlyPlaying(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              print(snapshot.data);
-              if ((snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.active)) {
-                int currentSongDuration = Provider.of<AudioPlayer>(context)
-                    .getDurationOfCurrentSong();
-                return Padding(
-                    padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
-                    child: Column(
+        body: Container(
+      constraints: BoxConstraints.expand(),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: FractionalOffset(0, 0),
+              end: FractionalOffset(1, 1),
+              colors: [
+            Color(0x4ECC0066),
+            Color(0x4EAA0055),
+            Color(0x4E880044),
+            Color(0x4E660033),
+            Color(0x4E440022),
+            Color(0x4E220011),
+            Theme.of(context).primaryColor.withAlpha(130)
+          ])),
+      child: StreamBuilder(
+          stream: Provider.of<AudioPlayer>(context).getCurrentStream(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            print(snapshot.data);
+            if (snapshot.data[0] != null) {
+              return Padding(
+                  padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
+                  child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                            child: Image.file(File(snapshot.data.imagePath))),
+                            child: Image.file(File(snapshot
+                                .data[0].audio.audio.metas.image.path))),
                         SizedBox(
                           height: 30,
                         ),
-                        Text(snapshot.data.title,
+                        Text(snapshot.data[0].audio.audio.metas.title,
                             softWrap: true,
                             style: GoogleFonts.montserrat(
                               color: Colors.white,
                               fontSize: 27,
                               fontWeight: FontWeight.w600,
                             )),
-                        Text(snapshot.data.artists,
+                        Text(snapshot.data[0].audio.audio.metas.artist,
                             style: GoogleFonts.montserrat(
                                 color: Colors.grey,
                                 fontSize: 15,
@@ -75,229 +73,144 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           height: 20,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 20, right: 15),
-                              child: IconButton(
-                                  icon: Icon(
-                                    MaterialCommunityIcons.skip_previous,
-                                    size: 40,
-                                  ),
-                                  onPressed: () {}),
-                            ),
-                            Expanded(
-                              
-                              child: Container(
-                                child: StreamBuilder<Object>(
-                                    
-                                    stream: Provider.of<AudioPlayer>(context)
-                                        .isPlaying(),
-                                    builder: (context, isPlaySnap) {
-                                      if (isPlaySnap.hasData &&
-                                          isPlaySnap.connectionState ==
-                                              ConnectionState.active) {
-                                        return IconButton(
-                                          padding: EdgeInsets.zero,
-                                            icon: isPlaySnap.data
-                                                ? Icon(
-                                                    MaterialCommunityIcons
-                                                        .pause_circle,
-                                                    size: 70)
-                                                : Icon(
-                                                    MaterialCommunityIcons
-                                                        .play_circle,
-                                                    size: 70),
-                                            onPressed: () {
-                                              Provider.of<AudioPlayer>(context,
-                                                      listen: false)
-                                                  .playOrPause();
-                                            });
-                                      } else {
-                                        return Container(
-                                          height: 0,
-                                          width: 0,
-                                        );
-                                      }
-                                    }),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                MaterialCommunityIcons.skip_previous,
+                                size: 50,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 20, right: 5),
-                              child: IconButton(
-                                  icon: Icon(MaterialCommunityIcons.skip_next,
-                                      size: 40),
-                                  onPressed: () {}),
+                            GestureDetector(
+                                child: snapshot.data[2]
+                                    ? Icon(
+                                        MaterialCommunityIcons.pause_circle,
+                                        size: 70,
+                                      )
+                                    : Icon(
+                                        MaterialCommunityIcons.play_circle,
+                                        size: 70,
+                                      ),
+                                onTap: () {
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
+                                      .playOrPause();
+                                }),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                MaterialCommunityIcons.skip_next,
+                                size: 50,
+                              ),
                             ),
-                            SizedBox(
-                              width: 5,
-                            )
                           ],
                         ),
                         SizedBox(
                           height: 30,
                         ),
-                        StreamBuilder<Object>(
-                            stream: Provider.of<AudioPlayer>(context)
-                                .getCurrentPosition(),
-                            builder: (context1, AsyncSnapshot snap) {
-                              if (snap.hasData) {
-                                print(snap.data);
-                                print(currentSongDuration);
-                                return Slider(
-                                  activeColor: Colors.white,
-                                  inactiveColor: Colors.grey,
-                                  value: snap.data.toDouble(),
-                                  min: 0,
-                                  max: (currentSongDuration + 1).toDouble(),
-                                  onChanged: (value) {
-                                    Provider.of<AudioPlayer>(context,
-                                            listen: false)
-                                        .seek(value.toInt());
-                                  },
-                                );
-                              }
-                            })
-                      ],
-                    ));
-              } else {
-                print('inside');
-                var tempSong = localStorage.getLastPlayedSong();
-
-                return Padding(
-                  padding: EdgeInsets.only(top: 60.0, left: 45, right: 30),
+                        Slider(
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.grey,
+                          value: snapshot.data[1].inSeconds.toDouble(),
+                          min: 0,
+                          max: (snapshot.data[0].audio.duration.inSeconds
+                                      .toDouble() +
+                                  1)
+                              .toDouble(),
+                          onChanged: (value) {
+                            print('called');
+                            Provider.of<AudioPlayer>(context, listen: false)
+                                .seek(value.toInt(), snapshot.data[2],
+                                    snapshot.data[0].audio.audio);
+                          },
+                        )
+                      ]));
+            } else {
+              var audio = audioFromSongDetails(
+                  Provider.of<AudioPlayer>(context).getLastPlayed());
+              List<dynamic> snapshot = [audio, Duration.zero, false];
+              return Padding(
+                  padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(child: Image.file(File(tempSong.imagePath))),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Text(tempSong.title,
-                          softWrap: true,
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: 27,
-                            fontWeight: FontWeight.w600,
-                          )),
-                      Text(tempSong.artists,
-                          style: GoogleFonts.montserrat(
-                              color: Colors.grey,
-                              fontSize: 15,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                            child:
+                                Image.file(File(snapshot[0].metas.image.path))),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(snapshot[0].metas.title,
+                            softWrap: true,
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 27,
                               fontWeight: FontWeight.w600,
-                              height: 1.5)),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 20, right: 15),
-                            child: IconButton(
-                                icon: Icon(
-                                  MaterialCommunityIcons.skip_previous,
-                                  size: 40,
-                                ),
-                                onPressed: () {}),
-                          ),
-                          Expanded(
-                              
-                            child: Container(
-                              child: StreamBuilder<Object>(
-                                    
-                                  stream: Provider.of<AudioPlayer>(context)
-                                      .isPlaying(),
-                                  builder: (context, isPlaySnap) {
-                                    if (isPlaySnap.hasData &&
-                                        isPlaySnap.connectionState ==
-                                            ConnectionState.active) {
-                                      return IconButton(
-                                        padding: EdgeInsets.zero,
-                                          icon: isPlaySnap.data
-                                              ? Icon(
-                                                  MaterialCommunityIcons
-                                                      .pause_circle,
-                                                  size: 70)
-                                              : Icon(
-                                                  MaterialCommunityIcons
-                                                      .play_circle,
-                                                  size: 70),
-                                          onPressed: () {
-                                            Provider.of<AudioPlayer>(context,
-                                                    listen: false)
-                                                .playOrPause();
-                                          });
-                                    } else {
-                                      return Container(
-                                        height: 0,
-                                        width: 0,
-                                      );
-                                    }
-                                  }),
+                            )),
+                        Text(snapshot[0].metas.artist,
+                            style: GoogleFonts.montserrat(
+                                color: Colors.grey,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                height: 1.5)),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                MaterialCommunityIcons.skip_previous,
+                                size: 50,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 20, right: 5),
-                            child: IconButton(
-                                icon: Icon(MaterialCommunityIcons.skip_next,
-                                    size: 40),
-                                onPressed: () {}),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      
-                      StreamBuilder<Object>(
-                          stream: Provider.of<AudioPlayer>(context)
-                              .getCurrentPosition(),
-                          builder: (context, AsyncSnapshot snap) {
-                            int currentSongDuration =
-                                Provider.of<AudioPlayer>(context)
-                                    .getDurationOfCurrentSong();
-                            if (snap.hasData) {
-                              print(snap.data);
-                              print(currentSongDuration);
-                              return Slider(
-                                inactiveColor: Colors.grey,
-                                activeColor: Colors.white,
-                                value: snap.data.toDouble(),
-                                min: 0,
-                                max: currentSongDuration.toDouble(),
-                                onChanged: (value) {
+                            GestureDetector(
+                                child: snapshot[2]
+                                    ? Icon(
+                                        MaterialCommunityIcons.pause_circle,
+                                        size: 70,
+                                      )
+                                    : Icon(
+                                        MaterialCommunityIcons.play_circle,
+                                        size: 70,
+                                      ),
+                                onTap: () {
                                   Provider.of<AudioPlayer>(context,
                                           listen: false)
-                                      .seek(value.toInt());
-                                },
-                              );
-                            } else {
-                              print('whatt');
-                              return Slider(
-                                inactiveColor: Colors.grey,
-                                activeColor: Colors.white,
-                                value: 0,
-                                min: 0,
-                                max: currentSongDuration.toDouble(),
-                                onChanged: (value) {
-                                  print('damn');
-                                  Provider.of<AudioPlayer>(context,
-                                          listen: false)
-                                      .seek(value.toInt());
-                                },
-                              );
-                            }
-                          })
-                    ],
-                  ),
-                );
-              }
-            }),
-      ),
-    );
+                                      .playOrPause();
+                                }),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                MaterialCommunityIcons.skip_next,
+                                size: 50,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Slider(
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.grey,
+                          value: snapshot[1].inSeconds.toDouble(),
+                          min: 0,
+                          max: (40.toDouble() + 1).toDouble(),
+                          onChanged: (value) {
+                            print('called');
+                            Provider.of<AudioPlayer>(context, listen: false)
+                                .seek(value.toInt(), snapshot[2], null);
+                          },
+                        )
+                      ]));
+            }
+          }),
+    ));
   }
 }
