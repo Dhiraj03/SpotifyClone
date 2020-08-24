@@ -16,6 +16,7 @@ class ExpandedSongPage extends StatefulWidget {
 
 class _ExpandedSongPageState extends State<ExpandedSongPage> {
   LocalStorage localStorage;
+
   @override
   void initState() {
     localStorage = LocalStorage();
@@ -43,8 +44,8 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
       child: StreamBuilder(
           stream: Provider.of<AudioPlayer>(context).getCurrentStream(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            print(snapshot.data);
-            if (snapshot.data[0] != null) {
+            print(snapshot);
+            if (snapshot.data != null && snapshot.data[0] != null) {
               return Padding(
                   padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
                   child: Column(
@@ -128,6 +129,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                         )
                       ]));
             } else {
+              print('null song');
               var audio = audioFromSongDetails(
                   Provider.of<AudioPlayer>(context).getLastPlayed());
               List<dynamic> snapshot = [audio, Duration.zero, false];
@@ -199,9 +201,11 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                         Slider(
                           activeColor: Colors.white,
                           inactiveColor: Colors.grey,
-                          value: snapshot[1].inSeconds.toDouble(),
+                          value: 0,
                           min: 0,
-                          max: (40.toDouble() + 1).toDouble(),
+                          max: Provider.of<AudioPlayer>(context)
+                              .durationInSeconds
+                              .toDouble() ?? 0,
                           onChanged: (value) {
                             print('called');
                             Provider.of<AudioPlayer>(context, listen: false)

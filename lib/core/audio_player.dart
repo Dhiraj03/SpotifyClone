@@ -11,6 +11,8 @@ import 'package:rxdart/streams.dart';
 class AudioPlayer extends ChangeNotifier {
   final audioPlayer = AssetsAudioPlayer();
   final LocalStorage localStorage = LocalStorage();
+  Duration duration = Duration.zero;
+  int get durationInSeconds => duration.inSeconds;
   Future<void> playSong(int id) async {
     if (audioPlayer.isPlaying.value != null) {
       audioPlayer.play();
@@ -22,6 +24,7 @@ class AudioPlayer extends ChangeNotifier {
     audioPlayer.stop();
     audioPlayer.open(tempSong,
         showNotification: true, notificationSettings: NotificationSettings());
+    duration = audioPlayer.current.value.audio.duration;
   }
 
   Future<void> stop() async {
@@ -44,52 +47,32 @@ class AudioPlayer extends ChangeNotifier {
     var songDetails = localStorage.getLastPlayedSong();
     var audioSong = audioFromSongDetails(songDetails);
     await audioPlayer.open(audioSong, showNotification: true);
+    duration = audioPlayer.current.value.audio.duration;
   }
 
   Future<void> shuffle(Playlist playlist) async {}
 
-  Stream<bool> isPlaying() {
-    return audioPlayer.isPlaying;
-  }
-
-  bool isPlayingAtThisInstant() {
-    return audioPlayer.isPlaying.value;
-  }
-
-  Stream<SongDetailsModel> getCurrentlyPlaying() {
-    return audioPlayer.current.map((event) {
-      return localStorage.getSong(int.parse(event.audio.audio.metas.id));
-    });
-  }
-
   SongDetailsModel getLastPlayed() {
     return localStorage.getLastPlayedSong();
-  }
-
-  int getDurationOfCurrentSong() {
-    if (audioPlayer.current.value == null) {
-      return localStorage.durationBox.get('first');
-    } else {
-      localStorage.durationBox
-          .put('first', audioPlayer.current.value.audio.duration.inSeconds);
-      return audioPlayer.current.value.audio.duration.inSeconds;
-    }
-  }
-
-  Stream<int> getCurrentPosition() {
-    if (audioPlayer.current.value == null) return Stream.fromIterable([0]);
-    return audioPlayer.currentPosition.map((event) => event.inSeconds);
   }
 
   void seek(int seconds, bool isPlaying, Audio audio) {
     Duration duration = Duration(seconds: seconds);
     if (audio != null) {
       audioPlayer.seek(duration, force: true);
-    }
-    else {
-      Audio recentAudio = audioFromSongDetails(localStorage.getLastPlayedSong());
+    } else {
+      Audio recentAudio =
+          audioFromSongDetails(localStorage.getLastPlayedSong());
       audioPlayer.open(recentAudio, seek: duration);
+      duration = audioPlayer.current.value.audio.duration;
     }
+  }
+
+  Stream getCurrentlyPlaying() {
+    return audioPlayer.current;
+  }
+  Stream isPlaying() {
+    return audioPlayer.isPlaying;
   }
 
   Stream<List> getCurrentStream() {
