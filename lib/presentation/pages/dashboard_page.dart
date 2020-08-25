@@ -77,21 +77,25 @@ class _DashboardPageState extends State<DashboardPage>
                                           if (snapshot.hasData &&
                                               snapshot.data[0] != null) {
                                             bool liked;
-                                            if (LocalStorage().getSong(
-                                                        int.parse(snapshot
-                                                            .data[0]
-                                                            .audio
-                                                            .audio
-                                                            .metas
-                                                            .id)).isLiked ==
+                                            if (LocalStorage()
+                                                        .getSong(int.parse(
+                                                            snapshot
+                                                                .data[0]
+                                                                .audio
+                                                                .audio
+                                                                .metas
+                                                                .id))
+                                                        .isLiked ==
                                                     null ||
-                                                LocalStorage().getSong(
-                                                        int.parse(snapshot
-                                                            .data[0]
-                                                            .audio
-                                                            .audio
-                                                            .metas
-                                                            .id)).isLiked ==
+                                                LocalStorage()
+                                                        .getSong(int.parse(
+                                                            snapshot
+                                                                .data[0]
+                                                                .audio
+                                                                .audio
+                                                                .metas
+                                                                .id))
+                                                        .isLiked ==
                                                     false) {
                                               print('its falsee');
                                               liked = false;
@@ -227,76 +231,135 @@ class _DashboardPageState extends State<DashboardPage>
                                               Duration.zero,
                                               false
                                             ];
-                                            return Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: <Widget>[
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: FileImage(
-                                                                File(snapshot[0]
-                                                                    .metas
-                                                                    .image
-                                                                    .path)),
-                                                            fit: BoxFit.fill)),
-                                                  ),
-                                                  Container(
-                                                    width: 150,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Text(snapshot[0]
-                                                            .metas
-                                                            .title),
-                                                        SizedBox(
-                                                          height: 6,
-                                                        ),
-                                                        Text(
-                                                          snapshot[0]
-                                                              .metas
-                                                              .artist,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey),
-                                                        ),
-                                                      ],
+                                            if (snapshot != null &&
+                                                snapshot[0] != null) {
+                                              bool liked;
+                                              if (LocalStorage()
+                                                          .getSong(int.parse(
+                                                              snapshot[0]
+                                                                  .metas
+                                                                  .id))
+                                                          .isLiked ==
+                                                      null ||
+                                                  LocalStorage()
+                                                          .getSong(int.parse(
+                                                              snapshot[0]
+                                                                  .metas
+                                                                  .id))
+                                                          .isLiked ==
+                                                      false) {
+                                                print('its falsee');
+                                                liked = false;
+                                              } else {
+                                                liked = true;
+                                              }
+                                              return Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: FileImage(
+                                                                  File(snapshot[
+                                                                          0]
+                                                                      .metas
+                                                                      .image
+                                                                      .path)),
+                                                              fit:
+                                                                  BoxFit.fill)),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 40,
-                                                  ),
-                                                  if (snapshot[2])
-                                                    IconButton(
-                                                        icon: Icon(
-                                                            MaterialCommunityIcons
-                                                                .pause),
-                                                        onPressed: () {
-                                                          Provider.of<AudioPlayer>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .playOrPause();
-                                                        })
-                                                  else
-                                                    IconButton(
-                                                        icon: Icon(
-                                                            MaterialCommunityIcons
-                                                                .play),
-                                                        onPressed: () {
-                                                          Provider.of<AudioPlayer>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .playOrPause();
-                                                        }),
-                                                ]);
+                                                    Container(
+                                                      width: 150,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          Text(snapshot[0]
+                                                              .metas
+                                                              .title),
+                                                          SizedBox(
+                                                            height: 6,
+                                                          ),
+                                                          Text(
+                                                            snapshot[0]
+                                                                .metas
+                                                                .artist,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 40,
+                                                    ),
+                                                    if (snapshot[2])
+                                                      IconButton(
+                                                          icon: Icon(
+                                                              MaterialCommunityIcons
+                                                                  .pause),
+                                                          onPressed: () {
+                                                            Provider.of<AudioPlayer>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .playOrPause();
+                                                          })
+                                                    else
+                                                      IconButton(
+                                                          icon: Icon(
+                                                              MaterialCommunityIcons
+                                                                  .play),
+                                                          onPressed: () {
+                                                            Provider.of<AudioPlayer>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .playOrPause();
+                                                          }),
+                                                    if (liked == false)
+                                                      IconButton(
+                                                          icon: Icon(
+                                                              MaterialCommunityIcons
+                                                                  .heart_outline),
+                                                          onPressed: () {
+                                                            Provider.of<AudioPlayer>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .likeSong(int.parse(
+                                                                    snapshot[0]
+                                                                        .metas
+                                                                        .id));
+                                                            setState(() {});
+                                                          })
+                                                    else
+                                                      IconButton(
+                                                          icon: Icon(
+                                                              MaterialCommunityIcons
+                                                                  .heart),
+                                                          onPressed: () {
+                                                            Provider.of<AudioPlayer>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .likeSong(int.parse(
+                                                                    snapshot[0]
+                                                                        .metas
+                                                                        .id));
+                                                            setState(() {});
+                                                          })
+                                                  ]);
+                                            }
                                           }
                                         })),
                               )),

@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<AudioPlayer>(
         create: (_) => AudioPlayer(),
         child: MaterialApp(
+          
             debugShowCheckedModeBanner: false,
             theme: ThemeData.dark(),
             onGenerateRoute: Router.onGenerateRoute,
