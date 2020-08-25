@@ -131,7 +131,8 @@ class _DashboardPageState extends State<DashboardPage>
                                                               context)
                                                           .isPlaying(),
                                                   // ignore: missing_return
-                                                  builder: (BuildContext context,
+                                                  builder: (BuildContext
+                                                          context,
                                                       AsyncSnapshot snapshot1) {
                                                     if (!snapshot1.hasData ||
                                                         snapshot1
@@ -149,10 +150,12 @@ class _DashboardPageState extends State<DashboardPage>
                                                                 .active ||
                                                         snapshot1
                                                                 .connectionState ==
-                                                            ConnectionState.done)
+                                                            ConnectionState
+                                                                .done)
                                                       return IconButton(
                                                           icon: snapshot1.data
-                                                              ? Icon(Icons.pause)
+                                                              ? Icon(
+                                                                  Icons.pause)
                                                               : Icon(Icons
                                                                   .play_arrow),
                                                           onPressed: () async {
@@ -177,6 +180,25 @@ class _DashboardPageState extends State<DashboardPage>
                                                             }
                                                           });
                                                   }),
+                                              IconButton(
+
+                                                icon: tempSong.isLiked== null ? Icon(
+                                                    MaterialCommunityIcons
+                                                        .heart_outline) : 
+                                                        (tempSong.isLiked
+                                                    ? Icon(
+                                                        MaterialCommunityIcons
+                                                            .heart)
+                                                    : Icon(
+                                                        MaterialCommunityIcons
+                                                            .heart_outline)),
+                                                onPressed: () async {
+                                                  await Provider.of<
+                                                          AudioPlayer>(context, listen: false)
+                                                      .likeSong(
+                                                          tempSong.songID);
+                                                },
+                                              )
                                             ],
                                           );
                                         }

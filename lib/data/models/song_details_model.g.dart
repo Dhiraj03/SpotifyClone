@@ -24,13 +24,14 @@ class SongDetailsModelAdapter extends TypeAdapter<SongDetailsModel> {
       path: fields[6] as String,
       songID: fields[5] as int,
       title: fields[0] as String,
+      isLiked: fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, SongDetailsModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class SongDetailsModelAdapter extends TypeAdapter<SongDetailsModel> {
       ..writeByte(5)
       ..write(obj.songID)
       ..writeByte(6)
-      ..write(obj.path);
+      ..write(obj.path)
+      ..writeByte(7)
+      ..write(obj.isLiked);
   }
 
   @override

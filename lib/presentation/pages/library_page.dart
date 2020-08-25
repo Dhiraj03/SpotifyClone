@@ -6,6 +6,7 @@ import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
   @override
   Widget build(BuildContext context) {
+    // localStorage.deleteSongs();
     print(localStorage.getSongsLength());
     return Container(
       decoration: BoxDecoration(
@@ -54,19 +56,50 @@ class _LibraryPageState extends State<LibraryPage> {
                               image: FileImage(File(tempSong.imagePath)),
                               fit: BoxFit.fitWidth)),
                     ),
-                    trailing: PopupMenuButton(
-                        onSelected: (value) {},
-                        child: Icon(
-                          Icons.more_vert,
-                          color: Colors.grey,
-                        ),
-                        itemBuilder: (BuildContext context) {
-                          print('inside');
-                          List<PopupMenuItem> lol = [
-                            PopupMenuItem(child: Text('lol'))
-                          ];
-                          return lol;
-                        }),
+                    trailing: IconButton(
+                      icon: Icon(Icons.more_vert),
+                      color: Colors.grey,
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                width: 375,
+                                color: Colors.black,
+                                height: 600,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: FileImage(
+                                                    File(tempSong.imagePath)),
+                                                fit: BoxFit.fitHeight)),
+                                      ),
+                                      Center(
+                                        child: Text(tempSong.title,
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            )),
+                                      ),
+                                      Center(
+                                        child: Text(tempSong.artists,
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 15,
+                                              color: Colors.grey,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                    ),
                     title: Text(tempSong.title),
                     isThreeLine: true,
                     subtitle:

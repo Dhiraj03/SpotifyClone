@@ -13,34 +13,27 @@ class LocalStorage {
 
   Future<void> addSong(SongDetailsModel song) async {
     print('id ' + song.songID.toString());
-    songsBox.add(song);
-  }
-
-  Future<void> createPlaylist(PlaylistModel playlist) async {
-    playlistsBox.put(playlist.albumID, playlist);
+    songsBox.put(song.songID, song);
   }
 
   SongDetailsModel getSong(int songID) {
     return songsBox.getAt(songID);
   }
 
-  PlaylistModel getPlaylist(int albumID) {
-    return playlistsBox.getAt(albumID);
+  Future<void> likeSong(int songID) async {
+    SongDetailsModel song = songsBox.getAt(songID);
+    if (song.isLiked == null) song.isLiked = true;
+    else song.isLiked = !song.isLiked;
+    return await songsBox.putAt(songID, song);
   }
-
-  Future<void> addSongToPlaylist(SongDetailsModel song, int albumID) async {
-    final playlist = playlistsBox.getAt(albumID) as PlaylistModel;
-    playlist.songs.add(song);
-    await playlistsBox.putAt(albumID, playlist);
+ 
+  void deleteSongs() {
+    songsBox.deleteFromDisk();
   }
 
   int getSongsLength() {
     if (songsBox.isEmpty) return 0;
     return songsBox.length;
-  }
-
-  void deleteSongs() {
-    songsBox.deleteFromDisk();
   }
 
   SongDetailsModel getLastPlayedSong() {
@@ -49,5 +42,20 @@ class LocalStorage {
 
   Future<void> storeLastPlayedSong(SongDetailsModel song) async {
     return (await lastPlayedBox.put('first', song));
+  }
+
+  Future<void> createPlaylist(PlaylistModel playlist) async {
+    playlistsBox.put(playlist.albumID, playlist);
+  }
+
+  PlaylistModel getPlaylist(int albumID) {
+    return playlistsBox.getAt(albumID);
+  }
+
+  Future<void> addSongToPlayList(
+      SongDetailsModel song, PlaylistModel playlist) async {
+    var playlistFrombox = playlistsBox.get(playlist.albumID) as PlaylistModel;
+    playlistFrombox.songs.add(song);
+    return playlistsBox.putAt(playlist.albumID, playlistFrombox);
   }
 }

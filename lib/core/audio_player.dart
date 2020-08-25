@@ -13,6 +13,7 @@ class AudioPlayer extends ChangeNotifier {
   final LocalStorage localStorage = LocalStorage();
   Duration duration = Duration.zero;
   int get durationInSeconds => duration.inSeconds;
+
   Future<void> playSong(int id) async {
     if (audioPlayer.isPlaying.value != null) {
       audioPlayer.play();
@@ -50,6 +51,10 @@ class AudioPlayer extends ChangeNotifier {
     duration = audioPlayer.current.value.audio.duration;
   }
 
+  Future<void> likeSong(int songID) async {
+    await localStorage.likeSong(songID);
+  }
+
   Future<void> shuffle(Playlist playlist) async {}
 
   SongDetailsModel getLastPlayed() {
@@ -71,6 +76,7 @@ class AudioPlayer extends ChangeNotifier {
   Stream getCurrentlyPlaying() {
     return audioPlayer.current;
   }
+
   Stream isPlaying() {
     return audioPlayer.isPlaying;
   }

@@ -24,6 +24,8 @@ class SongDetailsModel extends Equatable {
   int songID;
   @HiveField(6)
   String path;
+  @HiveField(7)
+  bool isLiked;
   SongDetailsModel({
     this.album,
     this.artists,
@@ -32,8 +34,9 @@ class SongDetailsModel extends Equatable {
     this.path,
     this.songID,
     this.title,
+    this.isLiked
   });
   @override
   List<Object> get props =>
-      [album, artists, genres, imagePath, path, songID,title];
+      [album, artists, genres, imagePath, path, songID, title, isLiked];
 }
