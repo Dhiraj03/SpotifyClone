@@ -66,145 +66,239 @@ class _DashboardPageState extends State<DashboardPage>
                                   Router.navigator.pushNamed(Router.songPage);
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.zero,
-                                  alignment: Alignment.center,
-                                  child: StreamBuilder(
-                                      stream: Provider.of<AudioPlayer>(context)
-                                          .getCurrentlyPlaying(),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot snapshot) {
-                                        if (!snapshot.hasData ||
-                                            snapshot.connectionState ==
-                                                ConnectionState.waiting ||
-                                            snapshot.hasError ||
-                                            snapshot.connectionState ==
-                                                ConnectionState.none ||
-                                            snapshot.connectionState ==
-                                                ConnectionState.active) {
-                                          var tempSong =
-                                              Provider.of<AudioPlayer>(context)
-                                                  .getLastPlayed();
-                                          if (tempSong == null) {
-                                            return Container(
-                                                height: 0, width: 0);
+                                    padding: EdgeInsets.zero,
+                                    alignment: Alignment.center,
+                                    child: StreamBuilder(
+                                        stream:
+                                            Provider.of<AudioPlayer>(context)
+                                                .getCurrentStream(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.hasData &&
+                                              snapshot.data[0] != null) {
+                                            bool liked;
+                                            if (LocalStorage().getSong(
+                                                        int.parse(snapshot
+                                                            .data[0]
+                                                            .audio
+                                                            .audio
+                                                            .metas
+                                                            .id)).isLiked ==
+                                                    null ||
+                                                LocalStorage().getSong(
+                                                        int.parse(snapshot
+                                                            .data[0]
+                                                            .audio
+                                                            .audio
+                                                            .metas
+                                                            .id)).isLiked ==
+                                                    false) {
+                                              print('its falsee');
+                                              liked = false;
+                                            } else {
+                                              liked = true;
+                                            }
+                                            return Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: FileImage(
+                                                                File(snapshot
+                                                                    .data[0]
+                                                                    .audio
+                                                                    .audio
+                                                                    .metas
+                                                                    .image
+                                                                    .path)),
+                                                            fit: BoxFit.fill)),
+                                                  ),
+                                                  Container(
+                                                    width: 150,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        Text(snapshot
+                                                            .data[0]
+                                                            .audio
+                                                            .audio
+                                                            .metas
+                                                            .title),
+                                                        SizedBox(
+                                                          height: 6,
+                                                        ),
+                                                        Text(
+                                                          snapshot
+                                                              .data[0]
+                                                              .audio
+                                                              .audio
+                                                              .metas
+                                                              .artist,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 40,
+                                                  ),
+                                                  if (snapshot.data[2])
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            MaterialCommunityIcons
+                                                                .pause),
+                                                        onPressed: () {
+                                                          Provider.of<AudioPlayer>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .playOrPause();
+                                                        })
+                                                  else
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            MaterialCommunityIcons
+                                                                .play),
+                                                        onPressed: () {
+                                                          Provider.of<AudioPlayer>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .playOrPause();
+                                                        }),
+                                                  if (liked == false)
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            MaterialCommunityIcons
+                                                                .heart_outline),
+                                                        onPressed: () {
+                                                          Provider.of<AudioPlayer>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .likeSong(
+                                                                  int.parse(
+                                                                      snapshot
+                                                                          .data[
+                                                                              0]
+                                                                          .audio
+                                                                          .audio
+                                                                          .metas
+                                                                          .id));
+                                                          setState(() {});
+                                                        })
+                                                  else
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            MaterialCommunityIcons
+                                                                .heart),
+                                                        onPressed: () {
+                                                          Provider.of<AudioPlayer>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .likeSong(
+                                                                  int.parse(
+                                                                      snapshot
+                                                                          .data[
+                                                                              0]
+                                                                          .audio
+                                                                          .audio
+                                                                          .metas
+                                                                          .id));
+                                                          setState(() {});
+                                                        })
+                                                ]);
+                                          } else {
+                                            var audio = audioFromSongDetails(
+                                                Provider.of<AudioPlayer>(
+                                                        context)
+                                                    .getLastPlayed());
+                                            List<dynamic> snapshot = [
+                                              audio,
+                                              Duration.zero,
+                                              false
+                                            ];
+                                            return Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: FileImage(
+                                                                File(snapshot[0]
+                                                                    .metas
+                                                                    .image
+                                                                    .path)),
+                                                            fit: BoxFit.fill)),
+                                                  ),
+                                                  Container(
+                                                    width: 150,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        Text(snapshot[0]
+                                                            .metas
+                                                            .title),
+                                                        SizedBox(
+                                                          height: 6,
+                                                        ),
+                                                        Text(
+                                                          snapshot[0]
+                                                              .metas
+                                                              .artist,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 40,
+                                                  ),
+                                                  if (snapshot[2])
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            MaterialCommunityIcons
+                                                                .pause),
+                                                        onPressed: () {
+                                                          Provider.of<AudioPlayer>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .playOrPause();
+                                                        })
+                                                  else
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            MaterialCommunityIcons
+                                                                .play),
+                                                        onPressed: () {
+                                                          Provider.of<AudioPlayer>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .playOrPause();
+                                                        }),
+                                                ]);
                                           }
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: FileImage(File(
-                                                            tempSong
-                                                                .imagePath)),
-                                                        fit: BoxFit.fill)),
-                                              ),
-                                              Container(
-                                                width: 150,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Text(tempSong.title),
-                                                    SizedBox(
-                                                      height: 6,
-                                                    ),
-                                                    Text(
-                                                      tempSong.artists,
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 40,
-                                              ),
-                                              StreamBuilder(
-                                                  stream:
-                                                      Provider.of<AudioPlayer>(
-                                                              context)
-                                                          .isPlaying(),
-                                                  // ignore: missing_return
-                                                  builder: (BuildContext
-                                                          context,
-                                                      AsyncSnapshot snapshot1) {
-                                                    if (!snapshot1.hasData ||
-                                                        snapshot1
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting ||
-                                                        snapshot1.hasError)
-                                                      return Container(
-                                                        height: 0,
-                                                        width: 0,
-                                                      );
-                                                    else if (snapshot1
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .active ||
-                                                        snapshot1
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .done)
-                                                      return IconButton(
-                                                          icon: snapshot1.data
-                                                              ? Icon(
-                                                                  Icons.pause)
-                                                              : Icon(Icons
-                                                                  .play_arrow),
-                                                          onPressed: () async {
-                                                            if ((snapshot1.data ==
-                                                                        false ||
-                                                                    !snapshot1
-                                                                        .hasData) &&
-                                                                !snapshot
-                                                                    .hasData) {
-                                                              Provider.of<AudioPlayer>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .playRecentSong();
-                                                            } else {
-                                                              await Provider.of<
-                                                                          AudioPlayer>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .playOrPause();
-                                                            }
-                                                          });
-                                                  }),
-                                              IconButton(
-
-                                                icon: tempSong.isLiked== null ? Icon(
-                                                    MaterialCommunityIcons
-                                                        .heart_outline) : 
-                                                        (tempSong.isLiked
-                                                    ? Icon(
-                                                        MaterialCommunityIcons
-                                                            .heart)
-                                                    : Icon(
-                                                        MaterialCommunityIcons
-                                                            .heart_outline)),
-                                                onPressed: () async {
-                                                  await Provider.of<
-                                                          AudioPlayer>(context, listen: false)
-                                                      .likeSong(
-                                                          tempSong.songID);
-                                                },
-                                              )
-                                            ],
-                                          );
-                                        }
-                                        return Container(height: 0, width: 0);
-                                      }),
-                                ),
+                                        })),
                               )),
                           Expanded(
                             flex: 10,

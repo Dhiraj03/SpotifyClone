@@ -22,11 +22,15 @@ class LocalStorage {
 
   Future<void> likeSong(int songID) async {
     SongDetailsModel song = songsBox.getAt(songID);
-    if (song.isLiked == null) song.isLiked = true;
-    else song.isLiked = !song.isLiked;
+    print('Initially' + song.isLiked.toString());
+    if (song.isLiked == null)
+      song.isLiked = true;
+    else
+      song.isLiked = !song.isLiked;
+    print('Finally' + song.isLiked.toString());
     return await songsBox.putAt(songID, song);
   }
- 
+
   void deleteSongs() {
     songsBox.deleteFromDisk();
   }

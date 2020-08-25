@@ -52,6 +52,7 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   Future<void> likeSong(int songID) async {
+    print('Song ID' + songID.toString());
     await localStorage.likeSong(songID);
   }
 
