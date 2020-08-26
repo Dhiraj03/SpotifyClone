@@ -6,6 +6,7 @@ import 'package:SpotifyClone/data/datasources/local_storage.dart';
 import 'package:SpotifyClone/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:SpotifyClone/presentation/pages/add_song_page.dart';
 import 'package:SpotifyClone/presentation/pages/home_page.dart';
+import 'package:SpotifyClone/presentation/pages/library_dashboard_page.dart';
 import 'package:SpotifyClone/presentation/pages/library_page.dart';
 import 'package:SpotifyClone/routes/router.gr.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -25,6 +26,7 @@ class _DashboardPageState extends State<DashboardPage>
   PageController pageController;
   TabController tabController;
   DashboardBloc dashboardBloc;
+  final Key key = Key("main_dashboard");
   @override
   void initState() {
     dashboardBloc = DashboardBloc();
@@ -423,10 +425,13 @@ class _DashboardPageState extends State<DashboardPage>
                         ]),
                   ),
                   body: PageView(
+                    key: key,
                     pageSnapping: true,
                     physics: PageScrollPhysics(),
                     controller: pageController,
-                    children: <Widget>[HomePage(), LibraryPage()],
+                    children: <Widget>[HomePage(), Container(
+                      
+                      child: LibraryDashboardPage())],
                   ));
             } else if (state is AddSongPageState) {
               return AddSongPage();

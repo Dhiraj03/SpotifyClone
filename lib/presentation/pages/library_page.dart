@@ -20,6 +20,7 @@ class _LibraryPageState extends State<LibraryPage> {
     // localStorage.deleteSongs();
     print(localStorage.getSongsLength());
     return Scaffold(
+      
       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
@@ -36,6 +37,7 @@ class _LibraryPageState extends State<LibraryPage> {
         padding: const EdgeInsets.only(left: 8.0, top: 30),
         child: Column(
           children: <Widget>[
+            
             Expanded(
               child: ListView.builder(
                 itemCount: localStorage.getSongsLength(),
