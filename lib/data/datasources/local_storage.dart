@@ -16,6 +16,10 @@ class LocalStorage {
     songsBox.put(song.songID, song);
   }
 
+  Future<void> addPlaylist(PlaylistModel playlist) async {
+    playlistsBox.put(playlist.albumID, playlist);
+  }
+
   SongDetailsModel getSong(int songID) {
     return songsBox.getAt(songID);
   }
@@ -53,13 +57,24 @@ class LocalStorage {
   }
 
   PlaylistModel getPlaylist(int albumID) {
-    return playlistsBox.getAt(albumID);
+    return playlistsBox.getAt(albumID) as PlaylistModel;
   }
 
-  Future<void> addSongToPlayList(
-      SongDetailsModel song, PlaylistModel playlist) async {
-    var playlistFrombox = playlistsBox.get(playlist.albumID) as PlaylistModel;
+  List<PlaylistModel> getAllPlaylists() {
+    List<PlaylistModel> playlists = [];
+    for (int i = 0; i < getPlaylistLength(); i++) {
+      playlists.add(getPlaylist(i));
+    }
+    return playlists;
+  }
+
+  Future<void> addSongToPlayList(SongDetailsModel song, int playlistID) async {
+    var playlistFrombox = playlistsBox.get(playlistID) as PlaylistModel;
     playlistFrombox.songs.add(song);
-    return playlistsBox.putAt(playlist.albumID, playlistFrombox);
+    return playlistsBox.putAt(playlistID, playlistFrombox);
+  }
+
+  int getPlaylistLength() {
+    return playlistsBox.length;
   }
 }

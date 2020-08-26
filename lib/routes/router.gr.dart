@@ -4,11 +4,11 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'package:SpotifyClone/presentation/pages/add_song_to_playlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:SpotifyClone/presentation/pages/expanded_song_page.dart';
+import 'package:SpotifyClone/presentation/pages/add_song_to_playlist_page.dart';
 
 class Router {
   static const songPage = '/song-page';
@@ -26,27 +26,16 @@ class Router {
           settings: settings,
         );
       case Router.addSongToPlaylist:
-      if (hasInvalidArgs<AddSongToPlaylistArguments>(args,
-          isRequired: true)) {
-        return misTypedArgsRoute<AddSongToPlaylistArguments>(
-            args);
-      }
-      final typedArgs = args as AddSongToPlaylistArguments;
-      return MaterialPageRoute<dynamic>(
-        builder: (_) =>
-        AddSongToPlaylist(songId: typedArgs.songId),
-        settings: settings,
-      );
-      
-        
+        if (hasInvalidArgs<int>(args, isRequired: true)) {
+          return misTypedArgsRoute<int>(args);
+        }
+        final typedArgs = args as int;
+        return MaterialPageRoute(
+          builder: (_) => AddSongToPlaylist(songId: typedArgs),
+          settings: settings,
+        );
       default:
-      return unknownRoutePage(settings.name);
-        
+        return unknownRoutePage(settings.name);
     }
   }
-}
-
-class AddSongToPlaylistArguments {
-  final int songId;
-  AddSongToPlaylistArguments({@required this.songId});
 }

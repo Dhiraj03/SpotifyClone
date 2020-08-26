@@ -168,10 +168,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                       .pushNamed(
                                                           Router
                                                               .addSongToPlaylist,
-                                                          arguments:
-                                                              AddSongToPlaylistArguments(
-                                                                  songId: tempSong
-                                                                      .songID))
+                                                          arguments:tempSong
+                                                                      .songID)
                                                       .whenComplete(() {
                                                     Router.navigator.pop();
                                                   });
@@ -216,10 +214,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                       .pushNamed(
                                                           Router
                                                               .addSongToPlaylist,
-                                                          arguments:
-                                                              AddSongToPlaylistArguments(
-                                                                  songId: tempSong
-                                                                      .songID))
+                                                          arguments:tempSong
+                                                                      .songID)
                                                       .whenComplete(() {
                                                     Router.navigator.pop();
                                                   });
@@ -247,9 +243,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                           Router
                                                               .addSongToPlaylist,
                                                           arguments:
-                                                              AddSongToPlaylistArguments(
-                                                                  songId: tempSong
-                                                                      .songID))
+                                                               tempSong
+                                                                      .songID)
                                                       .whenComplete(() {
                                                     Router.navigator.pop();
                                                   });

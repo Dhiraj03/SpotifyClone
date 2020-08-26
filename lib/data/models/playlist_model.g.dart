@@ -19,25 +19,28 @@ class PlaylistModelAdapter extends TypeAdapter<PlaylistModel> {
     return PlaylistModel()
       ..albumID = fields[0] as int
       ..songs = (fields[1] as List)?.cast<SongDetailsModel>()
-      ..albumArt = fields[2] as AlbumArtModel
+      ..imagePath = fields[2] as String
       ..isAlbum = fields[3] as bool
-      ..genres = (fields[4] as List)?.cast<String>();
+      ..genres = (fields[4] as List)?.cast<String>()
+      ..name = fields[5] as String;
   }
 
   @override
   void write(BinaryWriter writer, PlaylistModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.albumID)
       ..writeByte(1)
       ..write(obj.songs)
       ..writeByte(2)
-      ..write(obj.albumArt)
+      ..write(obj.imagePath)
       ..writeByte(3)
       ..write(obj.isAlbum)
       ..writeByte(4)
-      ..write(obj.genres);
+      ..write(obj.genres)
+      ..writeByte(5)
+      ..write(obj.name);
   }
 
   @override

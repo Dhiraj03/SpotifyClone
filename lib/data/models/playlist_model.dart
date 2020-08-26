@@ -14,11 +14,13 @@ class PlaylistModel extends Equatable {
   @HiveField(1)
   List<SongDetailsModel> songs;
   @HiveField(2)
-  AlbumArtModel albumArt;
+  String imagePath;
   @HiveField(3)
   bool isAlbum;
   @HiveField(4)
   List<String> genres;
+  @HiveField(5)
+  String name;
   @override
-  List<Object> get props => [albumID, songs, albumArt, genres, isAlbum];
+  List<Object> get props => [albumID, songs, imagePath, genres, isAlbum, name];
 }
