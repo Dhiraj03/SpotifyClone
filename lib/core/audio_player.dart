@@ -32,8 +32,12 @@ class AudioPlayer extends ChangeNotifier {
     await audioPlayer.stop();
   }
 
-  Future<void> loop() async {
+  Future<void> toggleLoop() async {
     await audioPlayer.toggleLoop();
+  }
+
+  Future<void> shufflePlaylist() async {
+    await audioPlayer.toggleShuffle();
   }
 
   Future<void> playOrPause() async {
@@ -55,8 +59,6 @@ class AudioPlayer extends ChangeNotifier {
     print('Song ID' + songID.toString());
     await localStorage.likeSong(songID);
   }
-
-  Future<void> shuffle(Playlist playlist) async {}
 
   SongDetailsModel getLastPlayed() {
     return localStorage.getLastPlayedSong();
@@ -82,11 +84,17 @@ class AudioPlayer extends ChangeNotifier {
     return audioPlayer.isPlaying;
   }
 
+  Future<void> loop() async {
+    return await audioPlayer.setLoopMode(LoopMode.single);
+  }
+
   Stream<List> getCurrentStream() {
     Stream currentlyPlayingStream = audioPlayer.current;
     Stream currentPositionStream = audioPlayer.currentPosition;
     Stream playStatus = audioPlayer.isPlaying;
-    return Rx.combineLatest3(currentlyPlayingStream, currentPositionStream,
-        playStatus, (a, b, c) => [a, b, c]);
+    Stream loopMode = audioPlayer.loopMode;
+    Stream shuffleMode = audioPlayer.isShuffling;
+    return Rx.combineLatest5(currentlyPlayingStream, currentPositionStream,
+        playStatus, loopMode,shuffleMode, (a, b, c, d,e ) => [a, b, c, d,e]);
   }
 }

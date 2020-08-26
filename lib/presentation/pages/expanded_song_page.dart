@@ -77,6 +77,24 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
+                                      .shufflePlaylist();
+                                },
+                                child: snapshot.data[4] == false
+                                    ? Icon(FlutterIcons.ios_shuffle_ion,
+                                        size: 43)
+                                    : Icon(
+                                        FlutterIcons.ios_shuffle_ion,
+                                        size: 43,
+                                        color: Colors.teal[600],
+                                      ),
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () {},
                               child: Icon(
@@ -106,6 +124,23 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 size: 50,
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
+                                      .toggleLoop();
+                                },
+                                child: snapshot.data[3] == LoopMode.none
+                                    ? Icon(FlutterIcons.loop_sli, size: 30)
+                                    : Icon(
+                                        FlutterIcons.loop_sli,
+                                        size: 30,
+                                        color: Colors.teal[600],
+                                      ),
+                              ),
+                            )
                           ],
                         ),
                         SizedBox(
@@ -121,7 +156,6 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   1)
                               .toDouble(),
                           onChanged: (value) {
-                            print('called');
                             Provider.of<AudioPlayer>(context, listen: false)
                                 .seek(value.toInt(), snapshot.data[2],
                                     snapshot.data[0].audio.audio);
@@ -132,7 +166,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
               print('null song');
               var audio = audioFromSongDetails(
                   Provider.of<AudioPlayer>(context).getLastPlayed());
-              List<dynamic> snapshot = [audio, Duration.zero, false];
+              List<dynamic> snapshot = [
+                audio,
+                Duration.zero,
+                false,
+                false,
+                false
+              ];
               return Padding(
                   padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
                   child: Column(
@@ -164,6 +204,24 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
+                                      .shufflePlaylist();
+                                },
+                                child: snapshot[4] == false
+                                    ? Icon(FlutterIcons.ios_shuffle_ion,
+                                        size: 43)
+                                    : Icon(
+                                        FlutterIcons.ios_shuffle_ion,
+                                        size: 43,
+                                        color: Colors.teal[600],
+                                      ),
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () {},
                               child: Icon(
@@ -193,6 +251,23 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 size: 50,
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Provider.of<AudioPlayer>(context,
+                                          listen: false)
+                                      .toggleLoop();
+                                },
+                                child: snapshot[3] == LoopMode.none
+                                    ? Icon(FlutterIcons.loop_sli, size: 30)
+                                    : Icon(
+                                        FlutterIcons.loop_sli,
+                                        size: 30,
+                                        color: Colors.teal[600],
+                                      ),
+                              ),
+                            )
                           ],
                         ),
                         SizedBox(
@@ -204,8 +279,9 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           value: 0,
                           min: 0,
                           max: Provider.of<AudioPlayer>(context)
-                              .durationInSeconds
-                              .toDouble() ?? 0,
+                                  .durationInSeconds
+                                  .toDouble() ??
+                              0,
                           onChanged: (value) {
                             print('called');
                             Provider.of<AudioPlayer>(context, listen: false)
