@@ -1,3 +1,4 @@
+import 'package:SpotifyClone/presentation/pages/album_library_page.dart';
 import 'package:SpotifyClone/presentation/pages/library_page.dart';
 import 'package:SpotifyClone/presentation/pages/song_settings_page.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _LibraryDashboardPageState extends State<LibraryDashboardPage>
                 controller: pageController,
                 children: <Widget>[
                   LibraryPage(),
-                  SongSettingsPage()
+                  AlbumLibraryPage()
                 ],
               ),
             )

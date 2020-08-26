@@ -20,7 +20,6 @@ class _LibraryPageState extends State<LibraryPage> {
     // localStorage.deleteSongs();
     print(localStorage.getSongsLength());
     return Scaffold(
-      
       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
@@ -34,10 +33,9 @@ class _LibraryPageState extends State<LibraryPage> {
               Color(0xE0342E3C),
               Theme.of(context).primaryColor.withAlpha(130)
             ])),
-        padding: const EdgeInsets.only(left: 8.0, top: 30),
+        padding: const EdgeInsets.only(left: 8.0, bottom: 30),
         child: Column(
           children: <Widget>[
-            
             Expanded(
               child: ListView.builder(
                 itemCount: localStorage.getSongsLength(),
@@ -68,7 +66,7 @@ class _LibraryPageState extends State<LibraryPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return SingleChildScrollView(
-                                    child: Container(
+                                  child: Container(
                                     color: Colors.black,
                                     child: Column(
                                       crossAxisAlignment:
@@ -83,8 +81,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                             width: 150,
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                    image: FileImage(
-                                                        File(tempSong.imagePath)),
+                                                    image: FileImage(File(
+                                                        tempSong.imagePath)),
                                                     fit: BoxFit.fitHeight)),
                                           ),
                                         ),
@@ -134,12 +132,14 @@ class _LibraryPageState extends State<LibraryPage> {
                                                   Provider.of<AudioPlayer>(
                                                           context,
                                                           listen: false)
-                                                      .likeSong(tempSong.songID);
+                                                      .likeSong(
+                                                          tempSong.songID);
 
                                                   _scaffoldKey.currentState
                                                       .showSnackBar(SnackBar(
                                                           duration: Duration(
-                                                              milliseconds: 500),
+                                                              milliseconds:
+                                                                  500),
                                                           content: tempSong
                                                                   .isLiked
                                                               ? Text(
@@ -170,8 +170,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                       .pushNamed(
                                                           Router
                                                               .addSongToPlaylist,
-                                                          arguments:tempSong
-                                                                      .songID)
+                                                          arguments:
+                                                              tempSong.songID)
                                                       .whenComplete(() {
                                                     Router.navigator.pop();
                                                   });
@@ -207,8 +207,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                           children: <Widget>[
                                             IconButton(
                                                 icon: Icon(
-                                                  MaterialCommunityIcons
-                                                      .album,
+                                                  MaterialCommunityIcons.album,
                                                   color: Colors.grey,
                                                 ),
                                                 onPressed: () {
@@ -216,8 +215,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                                       .pushNamed(
                                                           Router
                                                               .addSongToPlaylist,
-                                                          arguments:tempSong
-                                                                      .songID)
+                                                          arguments:
+                                                              tempSong.songID)
                                                       .whenComplete(() {
                                                     Router.navigator.pop();
                                                   });
@@ -235,8 +234,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                           children: <Widget>[
                                             IconButton(
                                                 icon: Icon(
-                                                  MaterialCommunityIcons
-                                                      .artist,
+                                                  MaterialCommunityIcons.artist,
                                                   color: Colors.grey,
                                                 ),
                                                 onPressed: () {
@@ -245,8 +243,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                                           Router
                                                               .addSongToPlaylist,
                                                           arguments:
-                                                               tempSong
-                                                                      .songID)
+                                                              tempSong.songID)
                                                       .whenComplete(() {
                                                     Router.navigator.pop();
                                                   });
