@@ -9,10 +9,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:SpotifyClone/presentation/pages/expanded_song_page.dart';
 import 'package:SpotifyClone/presentation/pages/add_song_to_playlist_page.dart';
+import 'package:SpotifyClone/presentation/pages/album_details_page.dart';
 
 class Router {
   static const songPage = '/song-page';
   static const addSongToPlaylist = '/add-song-to-playlist';
+  static const albumDetailsPage = '/album-details-page';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -32,6 +34,15 @@ class Router {
         final typedArgs = args as int;
         return MaterialPageRoute(
           builder: (_) => AddSongToPlaylist(songId: typedArgs),
+          settings: settings,
+        );
+      case Router.albumDetailsPage:
+        if (hasInvalidArgs<int>(args, isRequired: true)) {
+          return misTypedArgsRoute<int>(args);
+        }
+        final typedArgs = args as int;
+        return MaterialPageRoute(
+          builder: (_) => AlbumDetailsPage(id: typedArgs),
           settings: settings,
         );
       default:

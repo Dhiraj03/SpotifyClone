@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:SpotifyClone/data/datasources/local_storage.dart';
+import 'package:SpotifyClone/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 
 class AlbumLibraryPage extends StatefulWidget {
@@ -44,7 +45,7 @@ class _AlbumLibraryPageState extends State<AlbumLibraryPage> {
                         });
                         return ListTile(
                           onTap: () {
-                            //TODO - Show respective library page
+                            Router.navigator.pushNamed(Router.albumDetailsPage, arguments: tempAlbum.albumID);
                           },
                           leading: Container(
                             height: 100,
@@ -55,8 +56,7 @@ class _AlbumLibraryPageState extends State<AlbumLibraryPage> {
                                     fit: BoxFit.fitWidth)),
                           ),
                           trailing: IconButton(
-                            icon: Icon(Icons.more_vert), 
-                            onPressed: (){}),
+                              icon: Icon(Icons.more_vert), onPressed: () {}),
                           title: Text(tempAlbum.name),
                           isThreeLine: true,
                           subtitle: Text(genres),
