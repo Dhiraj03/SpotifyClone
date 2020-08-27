@@ -16,10 +16,6 @@ class AudioPlayer extends ChangeNotifier {
   int get durationInSeconds => duration.inSeconds;
 
   Future<void> playSong(int id) async {
-    if (audioPlayer.isPlaying.value != null) {
-      audioPlayer.play();
-    }
-
     var tempSongDetails = localStorage.getSong(id);
     var tempSong = audioFromSongDetails(tempSongDetails);
     await localStorage.storeLastPlayedSong(tempSongDetails);
@@ -100,10 +96,10 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   void playlistOnShuffle(PlaylistModel playlist) {
-    List<Audio> audios = playlist.songs.map((e) => audioFromSongDetails(e)).toList();
-    audioPlayer.open(Playlist(
-      audios: audios,
-      startIndex: 0
-    ), showNotification: true);
+    List<Audio> audios =
+        playlist.songs.map((e) => audioFromSongDetails(e)).toList();
+    audioPlayer.stop();
+    audioPlayer.open(Playlist(audios: audios, startIndex: 0),
+        showNotification: true);
   }
 }
