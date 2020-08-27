@@ -102,4 +102,12 @@ class AudioPlayer extends ChangeNotifier {
     audioPlayer.open(Playlist(audios: audios, startIndex: 0),
         showNotification: true);
   }
+
+  void playNext() {
+    audioPlayer.next(stopIfLast: false, keepLoopMode: false);
+  }
+
+  void playPrevious() {
+    audioPlayer.previous(keepLoopMode: false);
+  }
 }

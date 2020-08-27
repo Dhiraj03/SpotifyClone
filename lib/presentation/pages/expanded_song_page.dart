@@ -96,7 +96,10 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Provider.of<AudioPlayer>(context, listen: false)
+                                    .playPrevious();
+                              },
                               child: Icon(
                                 MaterialCommunityIcons.skip_previous,
                                 size: 50,
@@ -118,7 +121,9 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                       .playOrPause();
                                 }),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Provider.of<AudioPlayer>(context, listen:false).playNext();
+                              },
                               child: Icon(
                                 MaterialCommunityIcons.skip_next,
                                 size: 50,
