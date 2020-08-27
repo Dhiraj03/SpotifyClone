@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:SpotifyClone/core/hive_model_converter.dart';
 import 'package:SpotifyClone/data/datasources/local_storage.dart';
+import 'package:SpotifyClone/data/models/playlist_model.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
@@ -95,6 +96,14 @@ class AudioPlayer extends ChangeNotifier {
     Stream loopMode = audioPlayer.loopMode;
     Stream shuffleMode = audioPlayer.isShuffling;
     return Rx.combineLatest5(currentlyPlayingStream, currentPositionStream,
-        playStatus, loopMode,shuffleMode, (a, b, c, d,e ) => [a, b, c, d,e]);
+        playStatus, loopMode, shuffleMode, (a, b, c, d, e) => [a, b, c, d, e]);
+  }
+
+  void playlistOnShuffle(PlaylistModel playlist) {
+    List<Audio> audios = playlist.songs.map((e) => audioFromSongDetails(e)).toList();
+    audioPlayer.open(Playlist(
+      audios: audios,
+      startIndex: 0
+    ), showNotification: true);
   }
 }
