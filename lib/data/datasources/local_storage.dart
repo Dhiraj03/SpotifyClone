@@ -68,6 +68,14 @@ class LocalStorage {
     return playlists;
   }
 
+  List<SongDetailsModel> getAllSongs() {
+    List<SongDetailsModel> songs = [];
+    for (int i = 0; i < getSongsLength(); i++) {
+      songs.add(getSong(i));
+    }
+    return songs;
+  }
+
   Future<void> addSongToPlayList(SongDetailsModel song, int playlistID) async {
     var playlistFrombox = playlistsBox.get(playlistID) as PlaylistModel;
     playlistFrombox.songs.add(song);
@@ -76,5 +84,34 @@ class LocalStorage {
 
   int getPlaylistLength() {
     return playlistsBox.length;
+  }
+
+  List<SongDetailsModel> searchSongs(String searchQuery) {
+    if (searchQuery == null || searchQuery.isEmpty) return [];
+    List<SongDetailsModel> allSongs = getAllSongs();
+    List<SongDetailsModel> filteredSongs = [];
+    allSongs.forEach((song) {
+      if (song.album.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          song.artists.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          song.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          searchQuery.toLowerCase().contains(song.album.toLowerCase()) ||
+          searchQuery.toLowerCase().contains(song.artists.toLowerCase()) ||
+          searchQuery.toLowerCase().contains(song.title.toLowerCase())) {
+        print(song.title);
+        filteredSongs.add(song);
+      }
+    });
+    return filteredSongs;
+  }
+
+  List<PlaylistModel> searchPlaylists(String searchQuery) {
+    List<PlaylistModel> allPlaylists = getAllPlaylists();
+    List<PlaylistModel> filteredPlaylists = [];
+    allPlaylists.forEach((album) {
+      if (album.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          searchQuery.toLowerCase().contains(album.name.toLowerCase()))
+        filteredPlaylists.add(album);
+    });
+    return filteredPlaylists;
   }
 }

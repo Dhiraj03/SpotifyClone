@@ -8,6 +8,7 @@ import 'package:SpotifyClone/presentation/pages/add_song_page.dart';
 import 'package:SpotifyClone/presentation/pages/home_page.dart';
 import 'package:SpotifyClone/presentation/pages/library_dashboard_page.dart';
 import 'package:SpotifyClone/presentation/pages/library_page.dart';
+import 'package:SpotifyClone/presentation/pages/search_dashboard_page.dart';
 import 'package:SpotifyClone/routes/router.gr.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
@@ -429,9 +430,11 @@ class _DashboardPageState extends State<DashboardPage>
                     pageSnapping: true,
                     physics: PageScrollPhysics(),
                     controller: pageController,
-                    children: <Widget>[HomePage(), Container(
-                      
-                      child: LibraryDashboardPage())],
+                    children: <Widget>[
+                      HomePage(),
+                      SearchDashboardPage(),
+                      Container(child: LibraryDashboardPage())
+                    ],
                   ));
             } else if (state is AddSongPageState) {
               return AddSongPage();
