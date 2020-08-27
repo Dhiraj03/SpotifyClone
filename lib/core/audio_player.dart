@@ -108,6 +108,7 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   void playPrevious() {
+    print('called');
     audioPlayer.previous(keepLoopMode: false);
   }
 }
