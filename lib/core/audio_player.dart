@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:SpotifyClone/core/hive_model_converter.dart';
 import 'package:SpotifyClone/data/datasources/local_storage.dart';
@@ -6,6 +7,7 @@ import 'package:SpotifyClone/data/models/playlist_model.dart';
 import 'package:SpotifyClone/data/models/song_details_model.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/streams.dart';
 
@@ -17,7 +19,7 @@ class AudioPlayer extends ChangeNotifier {
 
   Future<void> playSong(int id) async {
     var tempSongDetails = localStorage.getSong(id);
-    var tempSong = audioFromSongDetails(tempSongDetails);
+    var tempSong =  audioFromSongDetails(tempSongDetails);
     await localStorage.storeLastPlayedSong(tempSongDetails);
     audioPlayer.stop();
     audioPlayer.open(tempSong,
@@ -47,7 +49,7 @@ class AudioPlayer extends ChangeNotifier {
   Future<void> playRecentSong() async {
     if (audioPlayer.current.value != null) await audioPlayer.stop();
     var songDetails = localStorage.getLastPlayedSong();
-    var audioSong = audioFromSongDetails(songDetails);
+    var audioSong =  audioFromSongDetails(songDetails);
     await audioPlayer.open(audioSong, showNotification: true);
     duration = audioPlayer.current.value.audio.duration;
   }
@@ -61,13 +63,13 @@ class AudioPlayer extends ChangeNotifier {
     return localStorage.getLastPlayedSong();
   }
 
-  void seek(int seconds, bool isPlaying, Audio audio) {
+  void seek(int seconds, bool isPlaying, Audio audio) async {
     Duration duration = Duration(seconds: seconds);
     if (audio != null) {
       audioPlayer.seek(duration, force: true);
     } else {
       Audio recentAudio =
-          audioFromSongDetails(localStorage.getLastPlayedSong());
+           audioFromSongDetails(localStorage.getLastPlayedSong());
       audioPlayer.open(recentAudio, seek: duration);
       duration = audioPlayer.current.value.audio.duration;
     }
@@ -95,11 +97,9 @@ class AudioPlayer extends ChangeNotifier {
         playStatus, loopMode, shuffleMode, (a, b, c, d, e) => [a, b, c, d, e]);
   }
 
-  void playlistOnShuffle(PlaylistModel playlist) {
-    List<Audio> audios =
-        playlist.songs.map((e) => audioFromSongDetails(e)).toList();
+  void playlistOnShuffle(PlaylistModel playlist)  {
     audioPlayer.stop();
-    audioPlayer.open(Playlist(audios: audios, startIndex: 0),
+    audioPlayer.open(playlistFromSongDetails(playlist),
         showNotification: true);
   }
 

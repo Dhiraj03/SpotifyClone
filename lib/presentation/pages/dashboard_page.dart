@@ -78,7 +78,8 @@ class _DashboardPageState extends State<DashboardPage>
                                         builder: (BuildContext context,
                                             AsyncSnapshot snapshot) {
                                           if (snapshot.hasData &&
-                                              snapshot.data[0] != null) {
+                                              snapshot.data[0] != null && snapshot.data[0].audio != null && snapshot.data[0].audio.audio != null ) {
+                                                
                                             bool liked;
                                             if (LocalStorage()
                                                         .getSong(int.parse(
@@ -229,6 +230,10 @@ class _DashboardPageState extends State<DashboardPage>
                                                 Provider.of<AudioPlayer>(
                                                         context)
                                                     .getLastPlayed());
+                                            if (audio == null) {
+                                              print('lol');
+                                              return Container();
+                                            }
                                             List<dynamic> snapshot = [
                                               audio,
                                               Duration.zero,

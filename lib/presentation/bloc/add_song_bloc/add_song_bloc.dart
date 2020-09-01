@@ -10,6 +10,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 part 'add_song_event.dart';
 part 'add_song_state.dart';
@@ -37,6 +38,9 @@ class AddSongBloc extends Bloc<AddSongEvent, AddSongState> {
       yield AddSongInitial();
     } else if (event is AddMusicToLibrary) {
       final length = localStorage.getSongsLength();
+      var colors = await PaletteGenerator.fromImageProvider(
+          FileImage(File(songDetails.imagePath)));
+      songDetails.colors = colors.dominantColor.color.toString();
       songDetails.songID = length;
       songDetails.artists = event.artist;
       songDetails.album = event.album;

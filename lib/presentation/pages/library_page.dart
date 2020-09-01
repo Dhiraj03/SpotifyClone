@@ -17,7 +17,6 @@ class _LibraryPageState extends State<LibraryPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    // localStorage.deleteSongs();
     print(localStorage.getSongsLength());
     return Scaffold(
       key: _scaffoldKey,
@@ -41,6 +40,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 itemCount: localStorage.getSongsLength(),
                 itemBuilder: (BuildContext context, int index) {
                   var tempSong = localStorage.getSong(index);
+                  print('COLOR : ' + tempSong.colors);
                   print(localStorage.getSong(index).title);
                   return ListTile(
                       onTap: () {

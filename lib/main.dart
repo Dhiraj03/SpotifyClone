@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<AudioPlayer>(
         create: (_) => AudioPlayer(),
         child: MaterialApp(
-          
+            themeMode : ThemeMode.dark,
+            darkTheme: ThemeData.dark(),
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.dark(),
             onGenerateRoute: Router.onGenerateRoute,
             navigatorKey: Router.navigatorKey,
             title: 'SpotifyClone',

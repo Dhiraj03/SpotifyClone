@@ -7,6 +7,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
 class ExpandedSongPage extends StatefulWidget {
@@ -16,37 +17,36 @@ class ExpandedSongPage extends StatefulWidget {
 
 class _ExpandedSongPageState extends State<ExpandedSongPage> {
   LocalStorage localStorage;
-
+  Color color;
+  Color textColor;
   @override
   void initState() {
     localStorage = LocalStorage();
     super.initState();
   }
 
+  Color getTextColor(Color color) {
+    if (color.computeLuminance() > 0.5)
+      return Colors.grey[800];
+    else
+      return Colors.grey;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: FractionalOffset(0, 0),
-                end: FractionalOffset(1, 1),
-                colors: [
-              Color(0x4ECC0066),
-              Color(0x4EAA0055),
-              Color(0x4E880044),
-              Color(0x4E660033),
-              Color(0x4E440022),
-              Color(0x4E220011),
-              Theme.of(context).primaryColor.withAlpha(130)
-            ])),
-        child: StreamBuilder(
-            stream: Provider.of<AudioPlayer>(context).getCurrentStream(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data != null && snapshot.data[0] != null) {
-                print(snapshot.toString());
-                return Dismissible(
+      body: StreamBuilder(
+          stream: Provider.of<AudioPlayer>(context).getCurrentStream(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data != null && snapshot.data[0] != null) {
+              print(snapshot.data[0].audio.audio.metas.extra);
+              print(snapshot.toString());
+              return Container(
+                color: Color(int.parse(snapshot
+                        .data[0].audio.audio.metas.extra['color']
+                        .substring(6, 16)))
+                    .withOpacity(0.5),
+                child: Dismissible(
                   direction: DismissDirection.horizontal,
                   key: Key(snapshot.data[1].inSeconds.toString() +
                       snapshot.data[0].index.toString()),
@@ -86,7 +86,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 )),
                             Text(snapshot.data[0].audio.audio.metas.artist,
                                 style: GoogleFonts.montserrat(
-                                    color: Colors.grey,
+                                    color: getTextColor(Color(int.parse(snapshot
+                                        .data[0]
+                                        .audio
+                                        .audio
+                                        .metas
+                                        .extra['color']
+                                        .substring(6, 16)))),
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     height: 1.5)),
@@ -176,7 +182,10 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                             ),
                             Slider(
                               activeColor: Colors.white,
-                              inactiveColor: Colors.grey,
+                              inactiveColor: getTextColor(Color(int.parse(
+                                  snapshot
+                                      .data[0].audio.audio.metas.extra['color']
+                                      .substring(6, 16)))),
                               value: snapshot.data[1].inSeconds.toDouble(),
                               min: 0,
                               max: (snapshot.data[0].audio.duration.inSeconds
@@ -190,19 +199,24 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               },
                             )
                           ])),
-                );
-              } else {
-                print('null song');
-                var audio = audioFromSongDetails(
-                    Provider.of<AudioPlayer>(context).getLastPlayed());
-                List<dynamic> snapshot = [
-                  audio,
-                  Duration.zero,
-                  false,
-                  false,
-                  false
-                ];
-                return Padding(
+                ),
+              );
+            } else {
+              print('null song');
+              var audio = audioFromSongDetails(
+                  Provider.of<AudioPlayer>(context).getLastPlayed());
+              List<dynamic> snapshot = [
+                audio,
+                Duration.zero,
+                false,
+                false,
+                false
+              ];
+              return Container(
+                color: Color(int.parse(
+                        snapshot[0].metas.extra['color'].substring(6, 16)))
+                    .withOpacity(0.5),
+                child: Padding(
                     padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -222,7 +236,11 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               )),
                           Text(snapshot[0].metas.artist,
                               style: GoogleFonts.montserrat(
-                                  color: Colors.grey,
+                                  color: getTextColor(Color(int.parse(
+                                      snapshot[0]
+                                          .metas
+                                          .extra['color']
+                                          .substring(6, 16)))),
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                   height: 1.5)),
@@ -283,19 +301,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 15.0),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    Provider.of<AudioPlayer>(context,
-                                            listen: false)
-                                        .toggleLoop();
-                                  },
-                                  child: snapshot[3] == LoopMode.none
-                                      ? Icon(FlutterIcons.loop_sli, size: 30)
-                                      : Icon(
-                                          FlutterIcons.loop_sli,
-                                          size: 30,
-                                          color: Colors.teal[600],
-                                        ),
-                                ),
+                                    onTap: () {
+                                      Provider.of<AudioPlayer>(context,
+                                              listen: false)
+                                          .toggleLoop();
+                                    },
+                                    child:
+                                        Icon(FlutterIcons.loop_sli, size: 30)),
                               )
                             ],
                           ),
@@ -304,7 +316,11 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           ),
                           Slider(
                             activeColor: Colors.white,
-                            inactiveColor: Colors.grey,
+                            inactiveColor: getTextColor(Color(int.parse(
+                                snapshot[0]
+                                    .metas
+                                    .extra['color']
+                                    .substring(6, 16)))),
                             value: 0,
                             min: 0,
                             max: Provider.of<AudioPlayer>(context)
@@ -317,10 +333,10 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   .seek(value.toInt(), snapshot[2], null);
                             },
                           )
-                        ]));
-              }
-            }),
-      ),
+                        ])),
+              );
+            }
+          }),
     );
   }
 }

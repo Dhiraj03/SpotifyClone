@@ -26,17 +26,21 @@ class SongDetailsModel extends Equatable {
   String path;
   @HiveField(7)
   bool isLiked;
-  SongDetailsModel({
-    this.album,
-    this.artists,
-    this.genres,
-    this.imagePath,
-    this.path,
-    this.songID,
-    this.title,
-    this.isLiked
-  });
+  @HiveField(8)
+  String colors;
+
+  SongDetailsModel(
+      {this.album,
+      this.artists,
+      this.genres,
+      this.imagePath,
+      this.path,
+      this.songID,
+      this.title,
+      this.isLiked,
+      this.colors
+      });
   @override
   List<Object> get props =>
-      [album, artists, genres, imagePath, path, songID, title, isLiked];
+      [album, artists, genres, imagePath, path, songID, title, isLiked, colors];
 }
