@@ -98,7 +98,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                       (BuildContext context,
                                           StateSetter setState) {
                                     return ListView.builder(
-                                      physics: ScrollPhysics(),
+                                        physics: ScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount:
                                             localStorage.getSongsLength(),
@@ -160,14 +160,11 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                     height: 50,
                                     width: 200,
                                     child: RaisedButton(
-                                       
-                                      elevation: 0,
-                                      color: Colors.black,
-                                      shape: RoundedRectangleBorder(
-                                        
-                                        borderRadius: BorderRadius.circular(30)
-                                      ),
-
+                                        elevation: 0,
+                                        color: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
                                         child: Text('ADD  SONGS',
                                             style: GoogleFonts.montserrat(
                                               fontSize: 15,
@@ -187,8 +184,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     }),
               ),
               Expanded(
-                  child: ListView.builder(
-                  physics: ScrollPhysics(),
+                child: ListView.builder(
+                    physics: ScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: playlist.songs.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -210,7 +207,6 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                             icon: Icon(Icons.more_vert),
                             color: Colors.grey,
                             onPressed: () {
-                              print(tempSong.isLiked);
                               showModalBottomSheet(
                                   isDismissible: true,
                                   isScrollControlled: true,
@@ -233,7 +229,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                 decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                         image: FileImage(File(
-                                                            tempSong.imagePath)),
+                                                            tempSong
+                                                                .imagePath)),
                                                         fit: BoxFit.fitHeight)),
                                               ),
                                             ),
@@ -263,7 +260,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                             Row(
                                               children: <Widget>[
                                                 IconButton(
-                                                    icon: tempSong.isLiked == null
+                                                    icon: tempSong.isLiked ==
+                                                            null
                                                         ? Icon(
                                                             MaterialCommunityIcons
                                                                 .heart_outline,
@@ -279,8 +277,9 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                             : Icon(
                                                                 MaterialCommunityIcons
                                                                     .heart,
-                                                                color: Colors
-                                                                    .teal[600])),
+                                                                color:
+                                                                    Colors.teal[
+                                                                        600])),
                                                     onPressed: () {
                                                       Provider.of<AudioPlayer>(
                                                               context,
@@ -305,7 +304,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                   width: 20,
                                                 ),
                                                 Text('Like',
-                                                    style: GoogleFonts.montserrat(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontSize: 20,
                                                     ))
                                               ],
@@ -324,7 +324,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                               Router
                                                                   .addSongToPlaylist,
                                                               arguments:
-                                                                  tempSong.songID)
+                                                                  tempSong
+                                                                      .songID)
                                                           .whenComplete(() {
                                                         Router.navigator.pop();
                                                       });
@@ -333,7 +334,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                   width: 20,
                                                 ),
                                                 Text('Add song to Playlist',
-                                                    style: GoogleFonts.montserrat(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontSize: 20,
                                                     ))
                                               ],
@@ -351,7 +353,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                   width: 20,
                                                 ),
                                                 Text('Add song to Queue',
-                                                    style: GoogleFonts.montserrat(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontSize: 20,
                                                     ))
                                               ],
@@ -370,7 +373,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                               Router
                                                                   .addSongToPlaylist,
                                                               arguments:
-                                                                  tempSong.songID)
+                                                                  tempSong
+                                                                      .songID)
                                                           .whenComplete(() {
                                                         Router.navigator.pop();
                                                       });
@@ -379,7 +383,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                   width: 20,
                                                 ),
                                                 Text('View Album',
-                                                    style: GoogleFonts.montserrat(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontSize: 20,
                                                     ))
                                               ],
@@ -398,7 +403,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                               Router
                                                                   .addSongToPlaylist,
                                                               arguments:
-                                                                  tempSong.songID)
+                                                                  tempSong
+                                                                      .songID)
                                                           .whenComplete(() {
                                                         Router.navigator.pop();
                                                       });
@@ -407,7 +413,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                                                   width: 20,
                                                 ),
                                                 Text('View Artists',
-                                                    style: GoogleFonts.montserrat(
+                                                    style:
+                                                        GoogleFonts.montserrat(
                                                       fontSize: 20,
                                                     ))
                                               ],
@@ -424,8 +431,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                           ),
                           title: Text(tempSong.title),
                           isThreeLine: true,
-                          subtitle:
-                              Text(tempSong.album + '  ~  ' + tempSong.artists));
+                          subtitle: Text(
+                              tempSong.album + '  ~  ' + tempSong.artists));
                     }),
               )
             ],

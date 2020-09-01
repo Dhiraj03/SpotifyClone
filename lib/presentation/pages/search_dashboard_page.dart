@@ -64,14 +64,12 @@ class _SearchDashboardPageState extends State<SearchDashboardPage> {
                     TextField(
                       controller: searchController,
                       onChanged: (_) {
-                        print(searchController.text);
                         searchBloc.add(SearchQueryChanged(
                             searchQuery: searchController.text));
                       },
                     )
                   ]);
                 } else if (state is SearchResult) {
-                  print('new result');
                   return ListView(
                     children: <Widget>[
                       SizedBox(
@@ -86,7 +84,6 @@ class _SearchDashboardPageState extends State<SearchDashboardPage> {
                       TextField(
                         controller: searchController,
                         onChanged: (_) {
-                          print(searchController.text);
                           searchBloc.add(SearchQueryChanged(
                               searchQuery: searchController.text));
                         },
@@ -110,7 +107,6 @@ class _SearchDashboardPageState extends State<SearchDashboardPage> {
                               shrinkWrap: true,
                               itemCount: state.songs.length,
                               itemBuilder: (BuildContext context, int index) {
-                                print('length' + state.songs.length.toString());
                                 var tempSong = state.songs[index];
                                 return ListTile(
                                     onTap: () {
@@ -131,7 +127,6 @@ class _SearchDashboardPageState extends State<SearchDashboardPage> {
                                       icon: Icon(Icons.more_vert),
                                       color: Colors.grey,
                                       onPressed: () {
-                                        print(tempSong.isLiked);
                                         showModalBottomSheet(
                                             isDismissible: true,
                                             isScrollControlled: true,

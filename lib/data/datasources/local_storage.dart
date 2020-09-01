@@ -12,7 +12,6 @@ class LocalStorage {
   }
 
   Future<void> addSong(SongDetailsModel song) async {
-    print('id ' + song.songID.toString());
     songsBox.put(song.songID, song);
   }
 
@@ -26,12 +25,12 @@ class LocalStorage {
 
   Future<void> likeSong(int songID) async {
     SongDetailsModel song = songsBox.getAt(songID);
-    print('Initially' + song.isLiked.toString());
+
     if (song.isLiked == null)
       song.isLiked = true;
     else
       song.isLiked = !song.isLiked;
-    print('Finally' + song.isLiked.toString());
+
     return await songsBox.putAt(songID, song);
   }
 
@@ -97,7 +96,6 @@ class LocalStorage {
           searchQuery.toLowerCase().contains(song.album.toLowerCase()) ||
           searchQuery.toLowerCase().contains(song.artists.toLowerCase()) ||
           searchQuery.toLowerCase().contains(song.title.toLowerCase())) {
-        print(song.title);
         filteredSongs.add(song);
       }
     });

@@ -25,11 +25,15 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
     super.initState();
   }
 
-  Color getTextColor(Color color) {
-    if (color.computeLuminance() > 0.5)
-      return Colors.grey[800];
+  Color getColor(Color color) {
+    if (color.computeLuminance() > 0.8)
+      return Colors.black87;
+    else if (color.computeLuminance() > 0.6)
+      return Colors.black54;
+    else if (color.computeLuminance() > 0.4)
+      return Colors.black38;
     else
-      return Colors.grey;
+      return Colors.white54;
   }
 
   @override
@@ -39,13 +43,31 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
           stream: Provider.of<AudioPlayer>(context).getCurrentStream(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null && snapshot.data[0] != null) {
-              print(snapshot.data[0].audio.audio.metas.extra);
-              print(snapshot.toString());
+              Color bgColor = Color(int.parse(snapshot
+                  .data[0].audio.audio.metas.extra['color']
+                  .substring(6, 16)));
               return Container(
-                color: Color(int.parse(snapshot
-                        .data[0].audio.audio.metas.extra['color']
-                        .substring(6, 16)))
-                    .withOpacity(0.5),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: FractionalOffset(0, 0),
+                        end: FractionalOffset(1, 1),
+                        colors: [
+                      bgColor.withOpacity(1),
+                      bgColor.withOpacity(0.9),
+                      bgColor.withOpacity(0.8),
+                      bgColor.withOpacity(0.7),
+                      bgColor.withOpacity(0.6),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.4),
+                      bgColor.withOpacity(0.3),
+                      bgColor.withOpacity(0.2),
+                      bgColor.withOpacity(0.1),
+                      bgColor.withOpacity(0.025),
+                      Colors.black12
+                    ])),
                 child: Dismissible(
                   direction: DismissDirection.horizontal,
                   key: Key(snapshot.data[1].inSeconds.toString() +
@@ -86,13 +108,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 )),
                             Text(snapshot.data[0].audio.audio.metas.artist,
                                 style: GoogleFonts.montserrat(
-                                    color: getTextColor(Color(int.parse(snapshot
-                                        .data[0]
-                                        .audio
-                                        .audio
-                                        .metas
-                                        .extra['color']
-                                        .substring(6, 16)))),
+                                    color: getColor(bgColor),
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     height: 1.5)),
@@ -182,10 +198,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                             ),
                             Slider(
                               activeColor: Colors.white,
-                              inactiveColor: getTextColor(Color(int.parse(
-                                  snapshot
-                                      .data[0].audio.audio.metas.extra['color']
-                                      .substring(6, 16)))),
+                              inactiveColor: getColor(bgColor),
                               value: snapshot.data[1].inSeconds.toDouble(),
                               min: 0,
                               max: (snapshot.data[0].audio.duration.inSeconds
@@ -202,7 +215,6 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                 ),
               );
             } else {
-              print('null song');
               var audio = audioFromSongDetails(
                   Provider.of<AudioPlayer>(context).getLastPlayed());
               List<dynamic> snapshot = [
@@ -212,10 +224,30 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                 false,
                 false
               ];
+              Color bgColor = Color(
+                  int.parse(snapshot[0].metas.extra['color'].substring(6, 16)));
               return Container(
-                color: Color(int.parse(
-                        snapshot[0].metas.extra['color'].substring(6, 16)))
-                    .withOpacity(0.5),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: FractionalOffset(0, 0),
+                        end: FractionalOffset(1, 1),
+                        colors: [
+                      bgColor.withOpacity(1),
+                      bgColor.withOpacity(0.9),
+                      bgColor.withOpacity(0.8),
+                      bgColor.withOpacity(0.7),
+                      bgColor.withOpacity(0.6),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.5),
+                      bgColor.withOpacity(0.4),
+                      bgColor.withOpacity(0.3),
+                      bgColor.withOpacity(0.2),
+                      bgColor.withOpacity(0.1),
+                      bgColor.withOpacity(0.025),
+                      Colors.black12
+                    ])),
                 child: Padding(
                     padding: EdgeInsets.only(top: 60.0, left: 20, right: 20),
                     child: Column(
@@ -236,11 +268,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               )),
                           Text(snapshot[0].metas.artist,
                               style: GoogleFonts.montserrat(
-                                  color: getTextColor(Color(int.parse(
-                                      snapshot[0]
-                                          .metas
-                                          .extra['color']
-                                          .substring(6, 16)))),
+                                  color: getColor(bgColor),
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                   height: 1.5)),
@@ -316,11 +344,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           ),
                           Slider(
                             activeColor: Colors.white,
-                            inactiveColor: getTextColor(Color(int.parse(
-                                snapshot[0]
-                                    .metas
-                                    .extra['color']
-                                    .substring(6, 16)))),
+                            inactiveColor: getColor(bgColor),
                             value: 0,
                             min: 0,
                             max: Provider.of<AudioPlayer>(context)
@@ -328,7 +352,11 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                     .toDouble() ??
                                 0,
                             onChanged: (value) {
-                              print('called');
+                              
+                                  //     listen: false)
+                                  // .durationInSeconds
+                                  // .toString());
+                              
                               Provider.of<AudioPlayer>(context, listen: false)
                                   .seek(value.toInt(), snapshot[2], null);
                             },

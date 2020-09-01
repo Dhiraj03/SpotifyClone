@@ -19,10 +19,10 @@ class AudioPlayer extends ChangeNotifier {
 
   Future<void> playSong(int id) async {
     var tempSongDetails = localStorage.getSong(id);
-    var tempSong =  audioFromSongDetails(tempSongDetails);
+    var tempSong = audioFromSongDetails(tempSongDetails);
     await localStorage.storeLastPlayedSong(tempSongDetails);
     audioPlayer.stop();
-    audioPlayer.open(tempSong,
+    await audioPlayer.open(tempSong,
         showNotification: true, notificationSettings: NotificationSettings());
     duration = audioPlayer.current.value.audio.duration;
   }
@@ -49,13 +49,12 @@ class AudioPlayer extends ChangeNotifier {
   Future<void> playRecentSong() async {
     if (audioPlayer.current.value != null) await audioPlayer.stop();
     var songDetails = localStorage.getLastPlayedSong();
-    var audioSong =  audioFromSongDetails(songDetails);
+    var audioSong = audioFromSongDetails(songDetails);
     await audioPlayer.open(audioSong, showNotification: true);
     duration = audioPlayer.current.value.audio.duration;
   }
 
   Future<void> likeSong(int songID) async {
-    print('Song ID' + songID.toString());
     await localStorage.likeSong(songID);
   }
 
@@ -66,12 +65,11 @@ class AudioPlayer extends ChangeNotifier {
   void seek(int seconds, bool isPlaying, Audio audio) async {
     Duration duration = Duration(seconds: seconds);
     if (audio != null) {
-      audioPlayer.seek(duration, force: true);
+      await audioPlayer.seek(duration, force: true);
     } else {
       Audio recentAudio =
-           audioFromSongDetails(localStorage.getLastPlayedSong());
-      audioPlayer.open(recentAudio, seek: duration);
-      duration = audioPlayer.current.value.audio.duration;
+          audioFromSongDetails(localStorage.getLastPlayedSong());
+      await audioPlayer.open(recentAudio, seek: duration);
     }
   }
 
@@ -97,10 +95,9 @@ class AudioPlayer extends ChangeNotifier {
         playStatus, loopMode, shuffleMode, (a, b, c, d, e) => [a, b, c, d, e]);
   }
 
-  void playlistOnShuffle(PlaylistModel playlist)  {
+  void playlistOnShuffle(PlaylistModel playlist) async{
     audioPlayer.stop();
-    audioPlayer.open(playlistFromSongDetails(playlist),
-        showNotification: true);
+    await audioPlayer.open(playlistFromSongDetails(playlist), showNotification: true);
   }
 
   void playNext() {
@@ -108,7 +105,6 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   void playPrevious() {
-    print('called');
     audioPlayer.previous(keepLoopMode: false);
   }
 }

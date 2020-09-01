@@ -20,11 +20,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchEvent event,
   ) async* {
     if (event is SearchQueryChanged) {
-      print('called');
       songs = localStorage.searchSongs(event.searchQuery);
       playlists = localStorage.searchPlaylists(event.searchQuery);
-      print('Searching for' + event.searchQuery);
-      print(songs.length);
+
       yield SearchResult(songs: songs, playlists: playlists);
     }
   }

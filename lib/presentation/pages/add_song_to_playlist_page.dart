@@ -279,7 +279,7 @@ class _AddSongToPlaylistState extends State<AddSongToPlaylist> {
                     else
                       genres += (', ' + element);
                   });
-                  print(playlists[index].songs[0].title);
+
                   return ListTile(
                     leading: Container(
                       height: 100,

@@ -17,7 +17,6 @@ class _LibraryPageState extends State<LibraryPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    print(localStorage.getSongsLength());
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
@@ -40,8 +39,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 itemCount: localStorage.getSongsLength(),
                 itemBuilder: (BuildContext context, int index) {
                   var tempSong = localStorage.getSong(index);
-                  print('COLOR : ' + tempSong.colors);
-                  print(localStorage.getSong(index).title);
+
                   return ListTile(
                       onTap: () {
                         Provider.of<AudioPlayer>(context, listen: false)
@@ -59,7 +57,6 @@ class _LibraryPageState extends State<LibraryPage> {
                         icon: Icon(Icons.more_vert),
                         color: Colors.grey,
                         onPressed: () {
-                          print(tempSong.isLiked);
                           showModalBottomSheet(
                               isDismissible: true,
                               isScrollControlled: true,
