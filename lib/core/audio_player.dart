@@ -65,7 +65,8 @@ class AudioPlayer extends ChangeNotifier {
   void seek(int seconds, bool isPlaying, Audio audio) async {
     Duration duration = Duration(seconds: seconds);
     if (audio != null) {
-      await audioPlayer.seek(duration, force: true);
+      print('sliding');
+      audioPlayer.seek(duration);
     } else {
       Audio recentAudio =
           audioFromSongDetails(localStorage.getLastPlayedSong());
@@ -86,7 +87,8 @@ class AudioPlayer extends ChangeNotifier {
   }
 
   Stream<List> getCurrentStream() {
-    Stream currentlyPlayingStream = audioPlayer.current;
+    Stream currentlyPlayingStream =
+        audioPlayer.current; //Gets the currently playing audio file
     Stream currentPositionStream = audioPlayer.currentPosition;
     Stream playStatus = audioPlayer.isPlaying;
     Stream loopMode = audioPlayer.loopMode;
@@ -95,9 +97,10 @@ class AudioPlayer extends ChangeNotifier {
         playStatus, loopMode, shuffleMode, (a, b, c, d, e) => [a, b, c, d, e]);
   }
 
-  void playlistOnShuffle(PlaylistModel playlist) async{
+  void playlistOnShuffle(PlaylistModel playlist) async {
     audioPlayer.stop();
-    await audioPlayer.open(playlistFromSongDetails(playlist), showNotification: true);
+    await audioPlayer.open(playlistFromSongDetails(playlist),
+        showNotification: true);
   }
 
   void playNext() {

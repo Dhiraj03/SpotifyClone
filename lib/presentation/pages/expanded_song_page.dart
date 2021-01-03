@@ -25,6 +25,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
     super.initState();
   }
 
+  double sliderval = 0;
   Color getColor(Color color) {
     if (color.computeLuminance() > 0.8)
       return Colors.black87;
@@ -37,12 +38,14 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext mainContext) {
     return Scaffold(
       body: StreamBuilder(
-          stream: Provider.of<AudioPlayer>(context).getCurrentStream(),
+          stream: Provider.of<AudioPlayer>(mainContext).getCurrentStream(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null && snapshot.data[0] != null) {
+              sliderval = snapshot.data[1].inSeconds.toDouble();
+              print(snapshot.data[0].audio);
               Color bgColor = Color(int.parse(snapshot
                   .data[0].audio.audio.metas.extra['color']
                   .substring(6, 16)));
@@ -78,11 +81,11 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                   },
                   confirmDismiss: (direction) async {
                     if (direction == DismissDirection.endToStart) {
-                      Provider.of<AudioPlayer>(context, listen: false)
+                      Provider.of<AudioPlayer>(mainContext, listen: false)
                           .playNext();
                       return true;
                     } else if (direction == DismissDirection.startToEnd) {
-                      Provider.of<AudioPlayer>(context, listen: false)
+                      Provider.of<AudioPlayer>(mainContext, listen: false)
                           .playPrevious();
                       return true;
                     }
@@ -123,7 +126,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   padding: const EdgeInsets.only(top: 15.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Provider.of<AudioPlayer>(context,
+                                      Provider.of<AudioPlayer>(mainContext,
                                               listen: false)
                                           .shufflePlaylist();
                                     },
@@ -139,7 +142,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Provider.of<AudioPlayer>(context,
+                                    Provider.of<AudioPlayer>(mainContext,
                                             listen: false)
                                         .playPrevious();
                                   },
@@ -159,13 +162,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                             size: 70,
                                           ),
                                     onTap: () {
-                                      Provider.of<AudioPlayer>(context,
+                                      Provider.of<AudioPlayer>(mainContext,
                                               listen: false)
                                           .playOrPause();
                                     }),
                                 GestureDetector(
                                   onTap: () {
-                                    Provider.of<AudioPlayer>(context,
+                                    Provider.of<AudioPlayer>(mainContext,
                                             listen: false)
                                         .playNext();
                                   },
@@ -178,7 +181,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   padding: const EdgeInsets.only(top: 15.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Provider.of<AudioPlayer>(context,
+                                      Provider.of<AudioPlayer>(mainContext,
                                               listen: false)
                                           .toggleLoop();
                                     },
@@ -196,27 +199,40 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                             SizedBox(
                               height: 30,
                             ),
-                            Slider(
-                              activeColor: Colors.white,
-                              inactiveColor: getColor(bgColor),
-                              value: snapshot.data[1].inSeconds.toDouble(),
-                              min: 0,
-                              max: (snapshot.data[0].audio.duration.inSeconds
-                                          .toDouble() +
-                                      1)
-                                  .toDouble(),
-                              onChanged: (value) {
-                                Provider.of<AudioPlayer>(context, listen: false)
-                                    .seek(value.toInt(), snapshot.data[2],
-                                        snapshot.data[0].audio.audio);
-                              },
-                            )
+                            StatefulBuilder(builder:
+                                (BuildContext contex, StateSetter setS) {
+                              return SliderTheme(
+                                data: SliderThemeData(
+                                    thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 8,
+                                )),
+                                child: Slider(
+                                  activeColor: Colors.white,
+                                  inactiveColor: getColor(bgColor),
+                                  value: sliderval,
+                                  min: 0,
+                                  max: snapshot.data[0].audio.duration.inSeconds
+                                      .toDouble(),
+                                  onChangeEnd: (val) {
+                                    Provider.of<AudioPlayer>(mainContext,
+                                            listen: false)
+                                        .seek(val.toInt(), snapshot.data[2],
+                                            snapshot.data[0].audio.audio);
+                                  },
+                                  onChanged: (val) {
+                                    setS(() {
+                                      sliderval = val;
+                                    });
+                                  },
+                                ),
+                              );
+                            }),
                           ])),
                 ),
               );
             } else {
               var audio = audioFromSongDetails(
-                  Provider.of<AudioPlayer>(context).getLastPlayed());
+                  Provider.of<AudioPlayer>(mainContext).getLastPlayed());
               List<dynamic> snapshot = [
                 audio,
                 Duration.zero,
@@ -283,7 +299,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 padding: const EdgeInsets.only(top: 15.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Provider.of<AudioPlayer>(context,
+                                    Provider.of<AudioPlayer>(mainContext,
                                             listen: false)
                                         .shufflePlaylist();
                                   },
@@ -315,7 +331,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                           size: 70,
                                         ),
                                   onTap: () {
-                                    Provider.of<AudioPlayer>(context,
+                                    Provider.of<AudioPlayer>(mainContext,
                                             listen: false)
                                         .playOrPause();
                                   }),
@@ -330,7 +346,7 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                 padding: const EdgeInsets.only(top: 15.0),
                                 child: GestureDetector(
                                     onTap: () {
-                                      Provider.of<AudioPlayer>(context,
+                                      Provider.of<AudioPlayer>(mainContext,
                                               listen: false)
                                           .toggleLoop();
                                     },
@@ -342,25 +358,33 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                           SizedBox(
                             height: 30,
                           ),
-                          Slider(
-                            activeColor: Colors.white,
-                            inactiveColor: getColor(bgColor),
-                            value: 0,
-                            min: 0,
-                            max: Provider.of<AudioPlayer>(context)
-                                    .durationInSeconds
-                                    .toDouble() ??
-                                0,
-                            onChanged: (value) {
-                              
-                                  //     listen: false)
-                                  // .durationInSeconds
-                                  // .toString());
-                              
-                              Provider.of<AudioPlayer>(context, listen: false)
-                                  .seek(value.toInt(), snapshot[2], null);
-                            },
-                          )
+                          StatefulBuilder(
+                              builder: (BuildContext contex, StateSetter setS) {
+                            return SliderTheme(
+                              data: SliderThemeData(
+                                  thumbShape: RoundSliderThumbShape(
+                                enabledThumbRadius: 8,
+                              )),
+                              child: Slider(
+                                activeColor: Colors.white,
+                                inactiveColor: getColor(bgColor),
+                                value: sliderval,
+                                min: 0,
+                                max: audio.metas.extra.length.toDouble(),
+                                onChangeEnd: (val) {
+                                  Provider.of<AudioPlayer>(mainContext,
+                                          listen: false)
+                                      .seek(val.toInt(), false,
+                                         null);
+                                },
+                                onChanged: (val) {
+                                  setS(() {
+                                    sliderval = val;
+                                  });
+                                },
+                              ),
+                            );
+                          }),
                         ])),
               );
             }
