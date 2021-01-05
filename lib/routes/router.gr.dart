@@ -4,6 +4,7 @@
 // AutoRouteGenerator
 // **************************************************************************
 
+import 'package:SpotifyClone/presentation/widgets/create_playlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
@@ -15,6 +16,7 @@ class Router {
   static const songPage = '/song-page';
   static const addSongToPlaylist = '/add-song-to-playlist';
   static const albumDetailsPage = '/album-details-page';
+  static const createPlaylistPage = '/create-playlist-page';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -45,6 +47,11 @@ class Router {
           builder: (_) => AlbumDetailsPage(id: typedArgs),
           settings: settings,
         );
+      case Router.createPlaylistPage:
+      return MaterialPageRoute(
+        builder: (_) => CreatePlaylist(),
+        settings: settings,
+      );
       default:
         return unknownRoutePage(settings.name);
     }

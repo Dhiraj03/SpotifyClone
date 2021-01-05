@@ -51,9 +51,7 @@ class LocalStorage {
     return (await lastPlayedBox.put('first', song));
   }
 
-  Future<void> createPlaylist(PlaylistModel playlist) async {
-    playlistsBox.put(playlist.albumID, playlist);
-  }
+  
 
   PlaylistModel getPlaylist(int albumID) {
     return playlistsBox.getAt(albumID) as PlaylistModel;

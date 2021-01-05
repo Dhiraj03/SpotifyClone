@@ -35,6 +35,15 @@ class AddPlaylistBloc extends Bloc<AddPlaylistEvent, AddPlaylistState> {
       playlist.songs.add(event.song);
       await localStorage.addPlaylist(playlist);
       yield PopModalSheet();
+    } else if (event is CreatePlaylistEvent) {
+      final length = localStorage.getPlaylistLength();
+      playlist.albumID = length;
+      playlist.genres = event.genres;
+      playlist.isAlbum = false;
+      playlist.name = event.name;
+      playlist.songs = [];
+      await localStorage.addPlaylist(playlist);
+      yield PopModalSheet();
     }
   }
 }

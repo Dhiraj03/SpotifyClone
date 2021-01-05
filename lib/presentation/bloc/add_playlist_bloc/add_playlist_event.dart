@@ -17,9 +17,16 @@ class AddPlaylistToLibrary extends AddPlaylistEvent {
   final List<String> genres;
   final SongDetailsModel song;
   AddPlaylistToLibrary(
-      {@required this.name,
-      @required this.genres,
-      @required this.song});
+      {@required this.name, @required this.genres, @required this.song});
   @override
-  List<Object> get props => [name,genres, song];
+  List<Object> get props => [name, genres, song];
 }
+
+class CreatePlaylistEvent extends AddPlaylistEvent {
+  final String name;
+  final List<String> genres;
+  CreatePlaylistEvent({@required this.name, @required this.genres});
+  @override
+  List<Object> get props => [name, genres];
+}
+
