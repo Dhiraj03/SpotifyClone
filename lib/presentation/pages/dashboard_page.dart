@@ -111,21 +111,41 @@ class _DashboardPageState extends State<DashboardPage>
                                                     MainAxisAlignment
                                                         .spaceEvenly,
                                                 children: <Widget>[
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: FileImage(
-                                                                File(snapshot
-                                                                    .data[0]
-                                                                    .audio
-                                                                    .audio
-                                                                    .metas
-                                                                    .image
-                                                                    .path)),
-                                                            fit: BoxFit.fill)),
-                                                  ),
+                                                  if (snapshot
+                                                          .data[0]
+                                                          .audio
+                                                          .audio
+                                                          .metas
+                                                          .image
+                                                          .path !=
+                                                      null)
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: FileImage(
+                                                                  File(snapshot
+                                                                      .data[0]
+                                                                      .audio
+                                                                      .audio
+                                                                      .metas
+                                                                      .image
+                                                                      .path)),
+                                                              fit:
+                                                                  BoxFit.fill)),
+                                                    )
+                                                  else
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: AssetImage(
+                                                                  'assets/music_note.jpg'),
+                                                              fit:
+                                                                  BoxFit.fill)),
+                                                    ),
                                                   Container(
                                                     width: 150,
                                                     child: Column(
@@ -264,20 +284,36 @@ class _DashboardPageState extends State<DashboardPage>
                                                       MainAxisAlignment
                                                           .spaceEvenly,
                                                   children: <Widget>[
-                                                    Container(
-                                                      height: 50,
-                                                      width: 50,
-                                                      decoration: BoxDecoration(
-                                                          image: DecorationImage(
-                                                              image: FileImage(
-                                                                  File(snapshot[
-                                                                          0]
-                                                                      .metas
-                                                                      .image
-                                                                      .path)),
-                                                              fit:
-                                                                  BoxFit.fill)),
-                                                    ),
+                                                    if (snapshot[0]
+                                                            .metas
+                                                            .image
+                                                            .path !=
+                                                        null)
+                                                      Container(
+                                                        height: 50,
+                                                        width: 50,
+                                                        decoration: BoxDecoration(
+                                                            image: DecorationImage(
+                                                                image: FileImage(
+                                                                    File(snapshot[
+                                                                            0]
+                                                                        .metas
+                                                                        .image
+                                                                        .path)),
+                                                                fit: BoxFit
+                                                                    .fill)),
+                                                      )
+                                                    else
+                                                      Container(
+                                                        height: 50,
+                                                        width: 50,
+                                                        decoration: BoxDecoration(
+                                                            image: DecorationImage(
+                                                                image: AssetImage(
+                                                                    "assets/music_note.jpg"),
+                                                                fit: BoxFit
+                                                                    .fill)),
+                                                      ),
                                                     Container(
                                                       width: 150,
                                                       child: Column(

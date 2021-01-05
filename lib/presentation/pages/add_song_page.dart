@@ -397,8 +397,8 @@ class _AddSongPageState extends State<AddSongPage> {
                                   image: (addSongBloc.songDetails == null ||
                                       addSongBloc.songDetails.imagePath == null)
                                       ? DecorationImage(
-                                          image: NetworkImage(
-                                              'https://cdn0.iconfinder.com/data/icons/internet-2020/1080/Applemusicandroid-512.png'))
+                                          image: AssetImage(
+                                              'assets/music_note.jpg'))
                                       : DecorationImage(
                                           image: FileImage(File(
                                               addSongBloc.songDetails.imagePath)))),

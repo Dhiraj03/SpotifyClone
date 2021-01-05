@@ -45,10 +45,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null && snapshot.data[0] != null) {
               sliderval = snapshot.data[1].inSeconds.toDouble();
-              print(snapshot.data[0].audio);
-              Color bgColor = Color(int.parse(snapshot
-                  .data[0].audio.audio.metas.extra['color']
-                  .substring(6, 16)));
+              print(snapshot.data);
+              Color bgColor =
+                  snapshot.data[0].audio.audio.metas.extra['color'] != null
+                      ? Color(int.parse(snapshot
+                          .data[0].audio.audio.metas.extra['color']
+                          .substring(6, 16)))
+                      : Colors.black;
               return Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -96,9 +99,14 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Container(
-                                child: Image.file(File(snapshot
-                                    .data[0].audio.audio.metas.image.path))),
+                            if (snapshot.data[0].audio.audio.metas.image.path !=
+                                null)
+                              Container(
+                                  child: Image.file(File(snapshot
+                                      .data[0].audio.audio.metas.image.path)))
+                            else
+                              Container(
+                                  child: Image.asset('assets/music_note.jpg')),
                             SizedBox(
                               height: 30,
                             ),
@@ -212,7 +220,8 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                                   value: sliderval,
                                   min: 0,
                                   max: snapshot.data[0].audio.duration.inSeconds
-                                      .toDouble(),
+                                          .toDouble() +
+                                      2,
                                   onChangeEnd: (val) {
                                     Provider.of<AudioPlayer>(mainContext,
                                             listen: false)
@@ -240,8 +249,10 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                 false,
                 false
               ];
-              Color bgColor = Color(
-                  int.parse(snapshot[0].metas.extra['color'].substring(6, 16)));
+              Color bgColor = snapshot[0].metas.extra['color'] != null
+                  ? Color(int.parse(
+                      snapshot[0].metas.extra['color'].substring(6, 16)))
+                  : Colors.black;
               return Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -269,9 +280,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Container(
-                              child: Image.file(
-                                  File(snapshot[0].metas.image.path))),
+                          if (snapshot[0].metas.image.path != null)
+                            Container(
+                                child: Image.file(
+                                    File(snapshot[0].metas.image.path)))
+                          else
+                            Container(
+                                child: Image.asset('assets/music_note.jpg')),
                           SizedBox(
                             height: 30,
                           ),
@@ -368,14 +383,13 @@ class _ExpandedSongPageState extends State<ExpandedSongPage> {
                               child: Slider(
                                 activeColor: Colors.white,
                                 inactiveColor: getColor(bgColor),
-                                value: sliderval,
+                                value: 0,
                                 min: 0,
-                                max: audio.metas.extra.length.toDouble(),
+                                max: audio.metas.extra.length.toDouble() + 2,
                                 onChangeEnd: (val) {
                                   Provider.of<AudioPlayer>(mainContext,
                                           listen: false)
-                                      .seek(val.toInt(), false,
-                                         null);
+                                      .seek(val.toInt(), false, null);
                                 },
                                 onChanged: (val) {
                                   setS(() {

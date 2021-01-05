@@ -49,8 +49,8 @@ class _LibraryPageState extends State<LibraryPage> {
                         height: 100,
                         width: 70,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: FileImage(File(tempSong.imagePath)),
+                            image:  DecorationImage(
+                                image: tempSong.imagePath != null ? FileImage(File(tempSong.imagePath)) : AssetImage('assets/music_note.jpg'),
                                 fit: BoxFit.fitWidth)),
                       ),
                       trailing: IconButton(
