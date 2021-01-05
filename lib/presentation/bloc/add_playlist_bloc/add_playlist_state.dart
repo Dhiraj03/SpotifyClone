@@ -1,10 +1,7 @@
 part of 'add_playlist_bloc.dart';
 
-abstract class AddPlaylistState extends Equatable {
+abstract class AddPlaylistState{
   const AddPlaylistState();
-  
-  @override
-  List<Object> get props => [];
 }
 
 class AddPlaylistInitial extends AddPlaylistState {}

@@ -72,6 +72,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                         SizedBox(
                                           height: 20,
                                         ),
+                                        if(tempSong.imagePath != null)
                                         Center(
                                           child: Container(
                                             height: 150,
@@ -80,6 +81,17 @@ class _LibraryPageState extends State<LibraryPage> {
                                                 image: DecorationImage(
                                                     image: FileImage(File(
                                                         tempSong.imagePath)),
+                                                    fit: BoxFit.fitHeight)),
+                                          ),
+                                        )
+                                        else 
+                                        Center(
+                                          child: Container(
+                                            height: 150,
+                                            width: 150,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: AssetImage("assets/music_note.jpg"),
                                                     fit: BoxFit.fitHeight)),
                                           ),
                                         ),

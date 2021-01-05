@@ -23,6 +23,7 @@ class AddPlaylistBloc extends Bloc<AddPlaylistEvent, AddPlaylistState> {
   ) async* {
     if (event is PickAlbumArt) {
       File imageFile = await picker.pickAlbumArt();
+      print(imageFile.path);
       playlist.imagePath = imageFile.path;
       yield AddPlaylistInitial();
     } else if (event is AddPlaylistToLibrary) {
@@ -36,6 +37,8 @@ class AddPlaylistBloc extends Bloc<AddPlaylistEvent, AddPlaylistState> {
       await localStorage.addPlaylist(playlist);
       yield PopModalSheet();
     } else if (event is CreatePlaylistEvent) {
+      print(playlist.imagePath);
+      print('image path' + playlist.imagePath);
       final length = localStorage.getPlaylistLength();
       playlist.albumID = length;
       playlist.genres = event.genres;

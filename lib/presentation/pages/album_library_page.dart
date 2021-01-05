@@ -79,10 +79,7 @@ class _AlbumLibraryPageState extends State<AlbumLibraryPage> {
                           leading: Container(
                             height: 100,
                             width: 70,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: FileImage(File(tempAlbum.imagePath)),
-                                    fit: BoxFit.fitWidth)),
+                            child: tempAlbum.imagePath != null ? Image.file(File(tempAlbum.imagePath)) : Image.asset("assets/music_note.jpg"),
                           ),
                           trailing: IconButton(
                               icon: Icon(Icons.more_vert), onPressed: () {}),
