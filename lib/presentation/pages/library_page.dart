@@ -38,8 +38,9 @@ class _LibraryPageState extends State<LibraryPage> {
               child: ListView.builder(
                 itemCount: localStorage.getSongsLength(),
                 itemBuilder: (BuildContext context, int index) {
+                  print(index);
+                  print(localStorage.getSongsLength());
                   var tempSong = localStorage.getSong(index);
-
                   return ListTile(
                       onTap: () {
                         Provider.of<AudioPlayer>(context, listen: false)
@@ -49,8 +50,10 @@ class _LibraryPageState extends State<LibraryPage> {
                         height: 100,
                         width: 70,
                         decoration: BoxDecoration(
-                            image:  DecorationImage(
-                                image: tempSong.imagePath != null ? FileImage(File(tempSong.imagePath)) : AssetImage('assets/music_note.jpg'),
+                            image: DecorationImage(
+                                image: tempSong.imagePath != null
+                                    ? FileImage(File(tempSong.imagePath))
+                                    : AssetImage('assets/music_note.jpg'),
                                 fit: BoxFit.fitWidth)),
                       ),
                       trailing: IconButton(
@@ -72,29 +75,30 @@ class _LibraryPageState extends State<LibraryPage> {
                                         SizedBox(
                                           height: 20,
                                         ),
-                                        if(tempSong.imagePath != null)
-                                        Center(
-                                          child: Container(
-                                            height: 150,
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: FileImage(File(
-                                                        tempSong.imagePath)),
-                                                    fit: BoxFit.fitHeight)),
+                                        if (tempSong.imagePath != null)
+                                          Center(
+                                            child: Container(
+                                              height: 150,
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: FileImage(File(
+                                                          tempSong.imagePath)),
+                                                      fit: BoxFit.fitHeight)),
+                                            ),
+                                          )
+                                        else
+                                          Center(
+                                            child: Container(
+                                              height: 150,
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "assets/music_note.jpg"),
+                                                      fit: BoxFit.fitHeight)),
+                                            ),
                                           ),
-                                        )
-                                        else 
-                                        Center(
-                                          child: Container(
-                                            height: 150,
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage("assets/music_note.jpg"),
-                                                    fit: BoxFit.fitHeight)),
-                                          ),
-                                        ),
                                         SizedBox(
                                           height: 20,
                                         ),
@@ -161,6 +165,38 @@ class _LibraryPageState extends State<LibraryPage> {
                                               width: 20,
                                             ),
                                             Text('Like',
+                                                style: GoogleFonts.montserrat(
+                                                  fontSize: 20,
+                                                ))
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            IconButton(
+                                                icon: Icon(
+                                                    MaterialCommunityIcons
+                                                        .trash_can,
+                                                    color: Colors.grey),
+                                                onPressed: () {
+                                                  Provider.of<AudioPlayer>(
+                                                          context,
+                                                          listen: false)
+                                                      .deleteSong(
+                                                          tempSong.songID);
+
+                                                  _scaffoldKey.currentState
+                                                      .showSnackBar(SnackBar(
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          content: Text(
+                                                              'The song has been removed from your library')));
+                                                  Navigator.pop(context);
+                                                }),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text('Remove from Library',
                                                 style: GoogleFonts.montserrat(
                                                   fontSize: 20,
                                                 ))

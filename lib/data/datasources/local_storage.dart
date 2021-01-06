@@ -12,7 +12,7 @@ class LocalStorage {
   }
 
   Future<void> addSong(SongDetailsModel song) async {
-    songsBox.put(song.songID, song);
+    songsBox.add(song);
   }
 
   Future<void> addPlaylist(PlaylistModel playlist) async {
@@ -20,6 +20,7 @@ class LocalStorage {
   }
 
   SongDetailsModel getSong(int songID) {
+    print(songsBox.getAt(songID).title);
     return songsBox.getAt(songID);
   }
 
@@ -44,14 +45,17 @@ class LocalStorage {
   }
 
   SongDetailsModel getLastPlayedSong() {
-    return lastPlayedBox.get('first');
+    SongDetailsModel lastPlayedSong = lastPlayedBox.get('first');
+    if (lastPlayedSong == null) return null;
+    if (songsBox.containsKey(lastPlayedSong.songID))
+      return lastPlayedSong;
+    else
+      return null;
   }
 
   Future<void> storeLastPlayedSong(SongDetailsModel song) async {
     return (await lastPlayedBox.put('first', song));
   }
-
-  
 
   PlaylistModel getPlaylist(int albumID) {
     return playlistsBox.getAt(albumID) as PlaylistModel;
@@ -109,5 +113,10 @@ class LocalStorage {
         filteredPlaylists.add(album);
     });
     return filteredPlaylists;
+  }
+
+  Future<void> deleteSong(int songId) async {
+    print('deleted' + songId.toString());
+    await songsBox.deleteAt(songId);
   }
 }

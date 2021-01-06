@@ -58,6 +58,10 @@ class AudioPlayer extends ChangeNotifier {
     await localStorage.likeSong(songID);
   }
 
+  Future<void> deleteSong(int songID) async {
+    await localStorage.deleteSong(songID);
+  }
+
   SongDetailsModel getLastPlayed() {
     return localStorage.getLastPlayedSong();
   }

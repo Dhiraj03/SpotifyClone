@@ -38,6 +38,7 @@ class AddSongBloc extends Bloc<AddSongEvent, AddSongState> {
       yield AddSongInitial();
     } else if (event is AddMusicToLibrary) {
       final length = localStorage.getSongsLength();
+      print('length' + length.toString());
       if (songDetails.imagePath != null) {
         var colors = await PaletteGenerator.fromImageProvider(
             FileImage(File(songDetails.imagePath)));

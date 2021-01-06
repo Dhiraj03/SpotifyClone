@@ -81,6 +81,7 @@ class _DashboardPageState extends State<DashboardPage>
                                               snapshot.data[0].audio != null &&
                                               snapshot.data[0].audio.audio !=
                                                   null) {
+                                            print('LOL');
                                             bool liked;
                                             if (LocalStorage()
                                                         .getSong(int.parse(
